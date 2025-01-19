@@ -2,9 +2,20 @@ import React, { useState } from 'react';
 import Lottie from "lottie-react";
 import signupLottie from '../../assets/signup/Signup.json'
 import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
+import useAuth from './../../hooks/useAuth';
+import { useForm } from 'react-hook-form';
+
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const SignUp = () => {
     const [isEyeOpen, setIsEyeOpen] = useState(false);
+    const { register, handleSubmit, reset } = useForm();
+    const { handelRegister } = useAuth();
+
+    const onSubmit = async (data) => {
+        console.log(data);
+    }
     return (
         <div className="hero min-h-screen">
             <div className="hero-content flex-col lg:flex-row-reverse gap-10">
@@ -12,30 +23,31 @@ const SignUp = () => {
                     <Lottie animationData={signupLottie} loop={true}></Lottie>
                 </div>
                 <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-                    <form className="card-body border-2 rounded-lg">
+                    <form onSubmit={handleSubmit(onSubmit)} className="card-body border-2 rounded-lg">
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Name <span className="text-red-500">*</span></span>
                             </label>
-                            <input type="text" placeholder="Enter Your Name" className="input input-bordered" />
+                            <input {...register('name', { required: true })} type="text" placeholder="Enter Your Name" className="input input-bordered" />
                         </div>
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Email <span className="text-red-500">*</span></span>
                             </label>
-                            <input type="email" placeholder="Enter Your Email" className="input input-bordered" />
+                            <input {...register('email', { required: true })} type="email" placeholder="Enter Your Email" className="input input-bordered" />
                         </div>
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Photo <span className="text-red-500">*</span></span>
                             </label>
-                            <input type="file" className="file-input w-full max-w-xs" />
+                            <input {...register('image', { required: true })} type="file" className="file-input w-full max-w-xs" />
                         </div>
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Role <span className="text-red-500">*</span></span>
                             </label>
                             <select
+                                {...register('role', { required: true })}
                                 className="select select-bordered"
                             >
                                 <option value="Student">Student</option>
@@ -48,7 +60,7 @@ const SignUp = () => {
                             <label className="label">
                                 <span className="label-text">Password <span className="text-red-500">*</span></span>
                             </label>
-                            <input type={isEyeOpen ? "text" : "password"} placeholder="Enter Your Password" className="input input-bordered" />
+                            <input {...register('password', { required: true })} type={isEyeOpen ? "text" : "password"} placeholder="Enter Your Password" className="input input-bordered" />
                             {isEyeOpen ? (
                                 <IoEyeOutline
                                     className=" absolute top-12 right-4 text-[1.5rem] text-[#777777] cursor-pointer"
