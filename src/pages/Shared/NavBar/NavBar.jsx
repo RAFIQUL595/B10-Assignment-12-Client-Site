@@ -1,11 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/logo.png'
 import { IoHomeOutline } from 'react-icons/io5';
-import { CiLogin } from 'react-icons/ci';
+import { CiLogin, CiLogout } from 'react-icons/ci';
 import { FaUserPlus } from 'react-icons/fa';
+import useAuth from '../../../hooks/useAuth';
 
-const Navbar = ({ user }) => {
+const Navbar = () => {
+    const { user, handelSignOut } = useAuth();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const toggleDropdownHandler = () => {
+        setIsDropdownOpen((prev) => !prev);
+    };
+
+    const closeDropdownHandler = () => {
+        setIsDropdownOpen(false);
+    };
+
+    useEffect(() => {
+        const handleOutsideClick = (event) => {
+            if (!event.target.closest(".dropdown-container")) {
+                closeDropdownHandler();
+            }
+        };
+
+        if (isDropdownOpen) {
+            document.addEventListener("click", handleOutsideClick);
+        } else {
+            document.removeEventListener("click", handleOutsideClick);
+        }
+
+        return () => {
+            document.removeEventListener("click", handleOutsideClick);
+        };
+    }, [isDropdownOpen]);
+
     const navOptions = <>
         <li className='text-lg'><Link to="/"><IoHomeOutline />Home</Link></li>
     </>
@@ -52,22 +82,41 @@ const Navbar = ({ user }) => {
                 {user ? (
                     <div className="flex items-center space-x-4">
                         {/* Profile Dropdown */}
-                        <div className="dropdown dropdown-end">
-                            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                        <div
+                            className={`dropdown-container dropdown dropdown-end ${isDropdownOpen ? "dropdown-open" : ""
+                                }`}
+                        >
+                            <div
+                                tabIndex={0}
+                                role="button"
+                                className="btn btn-ghost btn-circle avatar"
+                                onClick={toggleDropdownHandler}
+                            >
                                 <div className="w-10 rounded-full">
                                     <img src={user.photoURL} alt="Profile" />
                                 </div>
                             </div>
-                            <ul
-                                tabIndex={0}
-                                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                                <li>{user.displayName}</li>
-                                <li><Link to="/dashboard">Dashboard</Link></li>
-                                <li><button>Logout</button></li>
-                            </ul>
+                            {isDropdownOpen && (
+                                <ul
+                                    tabIndex={0}
+                                    className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-40 p-2 shadow space-y-2"
+                                >
+                                    <li className="font-bold text-center text-[16px]">
+                                        {user.displayName}
+                                    </li>
+                                    <li>
+                                        <Link to="/dashboard">
+                                            <span className="text-[16px]">Dashboard</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <button onClick={handelSignOut} className="text-[16px]">
+                                            Logout <CiLogout />
+                                        </button>
+                                    </li>
+                                </ul>
+                            )}
                         </div>
-                        {/* Logout Button */}
-                        <button className="btn btn-primary btn-sm">Logout</button>
                     </div>
                 ) : (
                     <div className="flex gap-4">

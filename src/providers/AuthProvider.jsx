@@ -1,6 +1,7 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import React, { createContext, useState } from 'react';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from 'firebase/auth';
+import React, { createContext, useEffect, useState } from 'react';
 import auth from './../firebase/firebase.config';
+import toast from 'react-hot-toast';
 
 export const AuthContext = createContext(null);
 
@@ -15,10 +16,46 @@ const AuthProvider = ({ children }) => {
         return createUserWithEmailAndPassword(auth, email, password);
     };
 
+    // Sign Out User
+    const handelSignOut = () => {
+        setLoading(true);
+        toast.success("Log Out Successfully");
+        return signOut(auth);
+    };
+
+    // Update user profile
+    const updateUser = (name, photo) => {
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+            return updateProfile(currentUser, {
+                displayName: name,
+                photoURL: photo,
+            }).then(() => {
+                setUser({
+                    ...currentUser,
+                    displayName: name,
+                    photoURL: photo,
+                });
+            });
+        }
+    };
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, currentUser => {
+            setUser(currentUser);
+            setLoading(false);
+        });
+        return () => {
+            return unsubscribe();
+        }
+    }, [])
+
     const authInfo = {
         user,
         loading,
         handelRegister,
+        updateUser,
+        handelSignOut
     }
 
     return (

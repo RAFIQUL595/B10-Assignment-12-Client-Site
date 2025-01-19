@@ -4,18 +4,67 @@ import signupLottie from '../../assets/signup/Signup.json'
 import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 import useAuth from './../../hooks/useAuth';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
+import toast from 'react-hot-toast';
+
+
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const SignUp = () => {
     const [isEyeOpen, setIsEyeOpen] = useState(false);
-    const { register, handleSubmit, reset } = useForm();
-    const { handelRegister } = useAuth();
+    const { register, handleSubmit } = useForm();
+    const { handelRegister, updateUser } = useAuth();
+    const axiosPublic = useAxiosPublic()
+    const navigate = useNavigate();
 
     const onSubmit = async (data) => {
-        console.log(data);
-    }
+        // Image upload to imgbb and then get the URL
+        const imageFile = { image: data.image[0] };
+        const res = await axiosPublic.post(image_hosting_api, imageFile, {
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
+        });
+
+        if (res.data.success) {
+            // Register the user
+            await handelRegister(data.email, data.password);
+
+            // Update user profile
+            await updateUser(data.name, res.data.data.display_url);
+
+            // Prepare user item data for server
+            const userInfo = {
+                name: data.name,
+                email: data.email,
+                role: data.role,
+                image: res.data.data.display_url,
+            };
+
+            // Send user data to the server
+            const userRes = await axiosPublic.post('/users', userInfo);
+            if (userRes.data.insertedId) {
+
+                // Show success popup
+                Swal.fire({
+                    title: "Sign Up Successful!",
+                    text: "Your account has been created successfully.",
+                    icon: "success"
+                });
+                navigate("/")
+            }
+        } else {
+            toast.error(res.data.error);
+        }
+
+    };
+
+
+
     return (
         <div className="hero min-h-screen">
             <div className="hero-content flex-col lg:flex-row-reverse gap-10">
