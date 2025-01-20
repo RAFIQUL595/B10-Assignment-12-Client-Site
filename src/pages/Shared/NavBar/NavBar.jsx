@@ -105,7 +105,7 @@ const Navbar = () => {
                                         {user.displayName}
                                     </li>
                                     <li>
-                                        <Link to="/dashboard">
+                                        <Link to="/dashboard/createSession">
                                             <span className="text-[16px]">Dashboard</span>
                                         </Link>
                                     </li>
