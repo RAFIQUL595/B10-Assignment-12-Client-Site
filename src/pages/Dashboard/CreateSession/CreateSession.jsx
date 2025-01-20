@@ -1,16 +1,64 @@
 import React from 'react';
 import useAuth from '../../../hooks/useAuth';
 import { useForm } from "react-hook-form";
+import useAxiosPublic from '../../../hooks/useAxiosPublic';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
+
+
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const CreateSession = () => {
   const { user } = useAuth();
   const { register, handleSubmit, reset } = useForm();
+  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
 
   const onSubmit = async (data) => {
-    // data.email=user.email
-    // data.name=user.displayName
-    // console.log(data);
+    // image upload to imgbb and then get an url
+    const formData = new FormData();
+    formData.append('image', data.sessionImage[0]);
+
+    const res = await axiosPublic.post(image_hosting_api, formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+
+    if (res?.data?.success) {
+      const sessionData = {
+        tutorName: user?.displayName,
+        tutorEmail: user?.email,
+        title: data?.title,
+        registrationStartDate: data?.registrationStartDate,
+        registrationEndDate: data?.registrationEndDate,
+        classStartDate: data?.classStartDate,
+        classEndDate: data?.classEndDate,
+        sessionDuration: data?.sessionDuration,
+        registrationFee: data?.registrationFee,
+        sessionImage: res?.data?.data?.display_url,
+        description: data?.description,
+        status: "pending"
+      };
+
+      const sessionRes = await axiosSecure.post('/session', sessionData);
+      if (sessionRes.data.insertedId) {
+        // show success popup
+        reset();
+        Swal.fire({
+          title: "Session Add Successful!",
+          icon: "success",
+          draggable: true
+        });
+      }
+      else {
+        toast.error(res.data.error);
+      }
+    }
   }
+
   return (
     <div className="max-w-4xl mx-auto p-10 bg-base-200 rounded-lg shadow-lg">
       <h1 className="text-xl md:text-3xl font-bold mb-6 text-center">Create Study Session</h1>
@@ -25,7 +73,7 @@ const CreateSession = () => {
             defaultValue={user?.displayName}
             readOnly
             className="input input-bordered w-full bg-gray-100 cursor-not-allowed"
-            {...register('name')}
+            {...register('tutorName')}
           />
         </div>
 
@@ -37,7 +85,7 @@ const CreateSession = () => {
             defaultValue={user?.email}
             readOnly
             className="input input-bordered w-full bg-gray-100 cursor-not-allowed"
-            {...register('email')}
+            {...register('tutorEmail')}
           />
         </div>
 
@@ -96,7 +144,7 @@ const CreateSession = () => {
         <div>
           <label className="block text-lg font-medium mb-1">Session Duration<span className="text-red-500">*</span></label>
           <input
-            type="number"
+            type="text"
             placeholder="Enter session duration"
             className="input input-bordered w-full"
             {...register('sessionDuration', { required: true })}
