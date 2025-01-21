@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
 import React, { createContext, useEffect, useState } from 'react';
 import auth from './../firebase/firebase.config';
 import toast from 'react-hot-toast';
@@ -10,11 +10,17 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
 
-    // Register With Email and Password
-    const handelRegister = (email, password) => {
+    // SignUp With Email and Password
+    const handelSignUp = (email, password) => {
         setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password);
     };
+
+    // Login With Email and Password
+    const handelLogin = (email, password) => {
+        setLoading(true);
+        return signInWithEmailAndPassword(auth, email, password);
+    }
 
     // Sign Out User
     const handelSignOut = () => {
@@ -53,7 +59,8 @@ const AuthProvider = ({ children }) => {
     const authInfo = {
         user,
         loading,
-        handelRegister,
+        handelSignUp,
+        handelLogin,
         updateUser,
         handelSignOut
     }

@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 
-const SessionsStatusCard = ({ sectionTitle, status, statusTitle, noStatus }) => {
+const SessionsStatusCard = ({ sectionTitle, status, statusTitle, noStatus, message }) => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
 
@@ -88,6 +88,11 @@ const SessionsStatusCard = ({ sectionTitle, status, statusTitle, noStatus }) => 
                                     <p>Registration Fee: ${session.registrationFee}</p>
                                     {statusTitle}
                                 </div>
+
+                                {/* Message Show */}
+                                {message}
+
+                                {/* Resend Button */}
                                 {status === 'rejected' && (
                                     <button
                                         onClick={() => handelResendApproval(session._id)}

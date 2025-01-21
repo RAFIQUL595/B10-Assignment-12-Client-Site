@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import toast from 'react-hot-toast';
+import { Helmet } from 'react-helmet-async';
 
 
 
@@ -17,7 +18,7 @@ const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 const SignUp = () => {
     const [isEyeOpen, setIsEyeOpen] = useState(false);
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
-    const { handelRegister, updateUser } = useAuth();
+    const { handelSignUp, updateUser } = useAuth();
     const axiosPublic = useAxiosPublic()
     const navigate = useNavigate();
 
@@ -32,7 +33,7 @@ const SignUp = () => {
 
         if (res.data.success) {
             // Register the user
-            await handelRegister(data.email, data.password);
+            await handelSignUp(data.email, data.password);
 
             // Update user profile
             await updateUser(data.name, res.data.data.display_url);
@@ -67,12 +68,16 @@ const SignUp = () => {
 
     return (
         <div className="hero min-h-screen">
+            <Helmet>
+                <title>SignUp | Study Platform</title>
+            </Helmet>
             <div className="hero-content flex-col lg:flex-row-reverse gap-10">
                 <div className="text-center md:w-2/6">
                     <Lottie animationData={signupLottie} loop={true}></Lottie>
                 </div>
                 <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
                     <form onSubmit={handleSubmit(onSubmit)} className="card-body border-2 rounded-lg">
+                        <h1 className="text-2xl text-center font-bold">Sign Up now!</h1>
 
                         {/* Name */}
                         <div className="form-control">
@@ -126,7 +131,7 @@ const SignUp = () => {
                             <label className="label">
                                 <span className="label-text">Password <span className="text-red-500">*</span></span>
                             </label>
-                            <input {...register('password', { required: true, minLength: 6, })} type={isEyeOpen ? "text" : "password"} placeholder="Enter Your Password" className="input input-bordered" />
+                            <input {...register('password', { required: true, minLength: 6 })} type={isEyeOpen ? "text" : "password"} placeholder="Enter Your Password" className="input input-bordered" />
                             {errors.password?.type === 'required' && <p className="text-red-600">Password is required</p>}
                             {errors.password?.type === 'minLength' && <p className="text-red-600">Password must be 6 characters</p>}
                             {isEyeOpen ? (
@@ -146,6 +151,8 @@ const SignUp = () => {
                         <div className="form-control mt-6">
                             <button className="btn btn-primary uppercase">Sign up</button>
                         </div>
+
+                        {/* Login Link */}
                         <div className="text-center">
                             <p>
                                 Already have an account?{" "}

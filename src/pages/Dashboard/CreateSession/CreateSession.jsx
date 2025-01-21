@@ -6,6 +6,7 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import SectionTitle from '../../../components/SectionTitle/SectionTitle';
+import { Helmet } from 'react-helmet-async';
 
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
@@ -62,6 +63,9 @@ const CreateSession = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-10 bg-base-200 rounded-lg shadow-lg">
+      <Helmet>
+        <title>Create Study Session | Study Platform</title>
+      </Helmet>
       <SectionTitle heading='Create Study Session'></SectionTitle>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

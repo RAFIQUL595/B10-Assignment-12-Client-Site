@@ -5,6 +5,7 @@ import SignUp from "../pages/SignUp/SignUp";
 import Dashboard from "../Layout/Dashboard";
 import CreateSession from "../pages/Dashboard/CreateSession/CreateSession";
 import ViewAllSessions from "../pages/Dashboard/ViewAllSessions/ViewAllSessions";
+import Login from "../pages/Login/Login";
 
 const router = createBrowserRouter([
     {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
             {
                 path: "signup",
                 element: <SignUp></SignUp>
+            },
+            {
+                path: "login",
+                element: <Login></Login>
             }
         ]
     },
