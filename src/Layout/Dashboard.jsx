@@ -3,9 +3,34 @@ import useAuth from './../hooks/useAuth';
 import { NavLink, Outlet } from 'react-router-dom';
 import { IoCreateOutline } from 'react-icons/io5';
 import { RiMenu3Line } from 'react-icons/ri';
+import { TbListDetails } from 'react-icons/tb';
 
 const Dashboard = () => {
     const { user } = useAuth();
+    const sideNavOption = <>
+        <li className="text-[16px]">
+            <NavLink
+                className={({ isActive }) =>
+                    `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
+                }
+                to="/dashboard/createSession"
+            >
+                <IoCreateOutline className="mr-2" />
+                Create Study Session
+            </NavLink>
+        </li>
+        <li className="text-[16px]">
+            <NavLink
+                className={({ isActive }) =>
+                    `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
+                }
+                to="/dashboard/viewAllSession"
+            >
+                <TbListDetails className="mr-2" />
+                View all study sessions
+            </NavLink>
+        </li>
+    </>
 
     return (
         <div className="md:flex max-w-screen-xl mx-auto my-10">
@@ -37,33 +62,13 @@ const Dashboard = () => {
                         tabIndex={0}
                         className="menu absolute -left-32 menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow"
                     >
-                        <li className="text-[16px]">
-                        <NavLink
-                            className={({ isActive }) =>
-                                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
-                            }
-                            to="/dashboard/createSession"
-                        >
-                            <IoCreateOutline className="mr-2" />
-                            Create Study Session
-                        </NavLink>
-                    </li>
+                        {sideNavOption}
                     </ul>
                 </div>
 
                 {/* Sidebar Menu for Larger Screens */}
                 <ul className="hidden md:block space-y-3 ">
-                    <li className="text-[16px]">
-                        <NavLink
-                            className={({ isActive }) =>
-                                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
-                            }
-                            to="/dashboard/createSession"
-                        >
-                            <IoCreateOutline className="mr-2" />
-                            Create Study Session
-                        </NavLink>
-                    </li>
+                    {sideNavOption}
                 </ul>
             </div>
 

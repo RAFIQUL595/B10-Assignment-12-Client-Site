@@ -16,7 +16,7 @@ const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 
 const SignUp = () => {
     const [isEyeOpen, setIsEyeOpen] = useState(false);
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const { handelRegister, updateUser } = useAuth();
     const axiosPublic = useAxiosPublic()
     const navigate = useNavigate();
@@ -48,7 +48,7 @@ const SignUp = () => {
             // Send user data to the server
             const userRes = await axiosPublic.post('/users', userInfo);
             if (userRes.data.insertedId) {
-
+                reset()
                 // Show success popup
                 Swal.fire({
                     title: "Sign Up Successful!",
@@ -78,38 +78,48 @@ const SignUp = () => {
                                 <span className="label-text">Name <span className="text-red-500">*</span></span>
                             </label>
                             <input {...register('name', { required: true })} type="text" placeholder="Enter Your Name" className="input input-bordered" />
+                            {errors.name && <span className="text-red-600">Name is required</span>}
                         </div>
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Email <span className="text-red-500">*</span></span>
                             </label>
                             <input {...register('email', { required: true })} type="email" placeholder="Enter Your Email" className="input input-bordered" />
+                            {errors.email && <span className="text-red-600">Email is required</span>}
                         </div>
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Photo <span className="text-red-500">*</span></span>
                             </label>
                             <input {...register('image', { required: true })} type="file" className="file-input w-full max-w-xs" />
+                            {errors.image && <span className="text-red-600">Photo is required</span>}
                         </div>
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Role <span className="text-red-500">*</span></span>
+                                <span className="label-text">
+                                    Role <span className="text-red-500">*</span>
+                                </span>
                             </label>
                             <select
                                 {...register('role', { required: true })}
                                 className="select select-bordered"
                             >
+                                <option value="">Select a role</option>
                                 <option value="Student">Student</option>
                                 <option value="Admin">Admin</option>
                                 <option value="Tutor">Tutor</option>
                             </select>
+                            {errors.role && (
+                                <span className="text-red-600">Role is required</span>)}
                         </div>
 
                         <div className="form-control relative">
                             <label className="label">
                                 <span className="label-text">Password <span className="text-red-500">*</span></span>
                             </label>
-                            <input {...register('password', { required: true })} type={isEyeOpen ? "text" : "password"} placeholder="Enter Your Password" className="input input-bordered" />
+                            <input {...register('password', { required: true, minLength: 6, })} type={isEyeOpen ? "text" : "password"} placeholder="Enter Your Password" className="input input-bordered" />
+                            {errors.password?.type === 'required' && <p className="text-red-600">Password is required</p>}
+                            {errors.password?.type === 'minLength' && <p className="text-red-600">Password must be 6 characters</p>}
                             {isEyeOpen ? (
                                 <IoEyeOutline
                                     className=" absolute top-12 right-4 text-[1.5rem] text-[#777777] cursor-pointer"

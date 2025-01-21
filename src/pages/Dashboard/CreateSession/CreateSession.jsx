@@ -5,6 +5,7 @@ import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
+import SectionTitle from '../../../components/SectionTitle/SectionTitle';
 
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
@@ -12,7 +13,7 @@ const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 
 const CreateSession = () => {
   const { user } = useAuth();
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
 
@@ -61,7 +62,7 @@ const CreateSession = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-10 bg-base-200 rounded-lg shadow-lg">
-      <h1 className="text-xl md:text-3xl font-bold mb-6 text-center">Create Study Session</h1>
+      <SectionTitle heading='Create Study Session'></SectionTitle>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
@@ -75,6 +76,7 @@ const CreateSession = () => {
             className="input input-bordered w-full bg-gray-100 cursor-not-allowed"
             {...register('tutorName')}
           />
+          {errors.tutorName && <span className="text-red-600">Tutor Name is required</span>}
         </div>
 
         {/* Tutor Email */}
@@ -87,6 +89,7 @@ const CreateSession = () => {
             className="input input-bordered w-full bg-gray-100 cursor-not-allowed"
             {...register('tutorEmail')}
           />
+          {errors.tutorEmail && <span className="text-red-600">Tutor Email is required</span>}
         </div>
 
         {/* Session Title */}
@@ -98,57 +101,63 @@ const CreateSession = () => {
             className="input input-bordered w-full"
             {...register('title', { required: true })}
           />
+          {errors.title && <span className="text-red-600">Session Title is required</span>}
         </div>
 
         {/* Registration Start Date */}
         <div>
-          <label className="block text-lg font-medium mb-1">Registration Start Date <span className="text-red-500">*</span></label>
+          <label className="block text-lg font-medium mb-1">Registration Start Date<span className="text-red-500">*</span></label>
           <input
             type="date"
             className="input input-bordered w-full"
             {...register('registrationStartDate', { required: true })}
           />
+          {errors.registrationStartDate && <span className="text-red-600">Registration Start Date is required</span>}
         </div>
 
         {/* Registration End Date */}
         <div>
-          <label className="block text-lg font-medium mb-1">Registration End Date <span className="text-red-500">*</span></label>
+          <label className="block text-lg font-medium mb-1">Registration End Date<span className="text-red-500">*</span></label>
           <input
             type="date"
             className="input input-bordered w-full"
             {...register('registrationEndDate', { required: true })}
           />
+          {errors.registrationEndDate && <span className="text-red-600">Registration End Date is required</span>}
         </div>
 
         {/* Class Start Date */}
         <div>
-          <label className="block text-lg font-medium mb-1">Class Start Date <span className="text-red-500">*</span></label>
+          <label className="block text-lg font-medium mb-1">Class Start Date<span className="text-red-500">*</span></label>
           <input
             type="date"
             className="input input-bordered w-full"
             {...register('classStartDate', { required: true })}
           />
+          {errors.classStartDate && <span className="text-red-600">Class Start Date is required</span>}
         </div>
 
         {/* Class End Date */}
         <div>
-          <label className="block text-lg font-medium mb-1">Class End Date <span className="text-red-500">*</span></label>
+          <label className="block text-lg font-medium mb-1">Class End Date<span className="text-red-500">*</span></label>
           <input
             type="date"
             className="input input-bordered w-full"
             {...register('classEndDate', { required: true })}
           />
+          {errors.classEndDate && <span className="text-red-600">Class End Date is required</span>}
         </div>
 
         {/* Session Duration */}
         <div>
           <label className="block text-lg font-medium mb-1">Session Duration<span className="text-red-500">*</span></label>
           <input
-            type="text"
+            type="number"
             placeholder="Enter session duration"
             className="input input-bordered w-full"
             {...register('sessionDuration', { required: true })}
           />
+          {errors.sessionDuration && <span className="text-red-600">Session Duration is required</span>}
         </div>
 
         {/* Registration Fee */}
@@ -161,22 +170,25 @@ const CreateSession = () => {
             className="input input-bordered w-full bg-gray-100 cursor-not-allowed"
             {...register('registrationFee')}
           />
+          {errors.registrationFee && <span className="text-red-600">Registration Fee is required</span>}
         </div>
 
         {/* Image */}
         <div className="form-control w-full my-6">
-          <label className="block text-lg font-medium mb-1">Session Image <span className="text-red-500">*</span></label>
+          <label className="block text-lg font-medium mb-1">Session Image<span className="text-red-500">*</span></label>
           <input {...register('sessionImage', { required: true })} type="file" className="file-input w-full max-w-xs" />
+          {errors.sessionImage && <span className="text-red-600">Session Image is required</span>}
         </div>
 
         {/* Session Description */}
         <div>
-          <label className="block text-lg font-medium mb-1">Session Description <span className="text-red-500">*</span></label>
+          <label className="block text-lg font-medium mb-1">Session Description<span className="text-red-500">*</span></label>
           <textarea
             placeholder="Enter session description"
             className="textarea textarea-bordered w-full"
             {...register('description', { required: true })}
           ></textarea>
+          {errors.description && <span className="text-red-600">Session Description is required</span>}
         </div>
 
         {/* Submit Button */}

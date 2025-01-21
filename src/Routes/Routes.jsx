@@ -4,6 +4,7 @@ import Home from "../pages/Home/Home/Home";
 import SignUp from "../pages/SignUp/SignUp";
 import Dashboard from "../Layout/Dashboard";
 import CreateSession from "../pages/Dashboard/CreateSession/CreateSession";
+import ViewAllSessions from "../pages/Dashboard/ViewAllSessions/ViewAllSessions";
 
 const router = createBrowserRouter([
     {
@@ -24,9 +25,14 @@ const router = createBrowserRouter([
         path: "dashboard",
         element: <Dashboard></Dashboard>,
         children: [
+            // Tutor routes
             {
                 path: "createSession",
                 element: <CreateSession></CreateSession>
+            },
+            {
+                path: "viewAllSession",
+                element: <ViewAllSessions></ViewAllSessions>
             }
         ]
     }
