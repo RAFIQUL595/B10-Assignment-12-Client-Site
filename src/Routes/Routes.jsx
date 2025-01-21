@@ -6,6 +6,7 @@ import Dashboard from "../Layout/Dashboard";
 import CreateSession from "../pages/Dashboard/CreateSession/CreateSession";
 import ViewAllSessions from "../pages/Dashboard/ViewAllSessions/ViewAllSessions";
 import Login from "../pages/Login/Login";
+import UploadMaterials from "../pages/Dashboard/UploadMaterials/UploadMaterials";
 
 const router = createBrowserRouter([
     {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
             {
                 path: "viewAllSession",
                 element: <ViewAllSessions></ViewAllSessions>
+            },
+            {
+                path: "uploadMaterials",
+                element: <UploadMaterials></UploadMaterials>
             }
         ]
     }

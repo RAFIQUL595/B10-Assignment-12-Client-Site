@@ -180,7 +180,7 @@ const CreateSession = () => {
         {/* Image */}
         <div className="form-control w-full my-6">
           <label className="block text-lg font-medium mb-1">Session Image<span className="text-red-500">*</span></label>
-          <input {...register('sessionImage', { required: true })} type="file" className="file-input w-full max-w-xs" />
+          <input {...register('sessionImage', { required: true })} type="file" className="file-input file-input-bordered w-full" />
           {errors.sessionImage && <span className="text-red-600">Session Image is required</span>}
         </div>
 

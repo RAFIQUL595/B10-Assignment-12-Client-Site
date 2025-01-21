@@ -6,6 +6,7 @@ import { RiMenu3Line } from 'react-icons/ri';
 import { TbListDetails } from 'react-icons/tb';
 import useAxiosSecure from './../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
+import { FaCloudUploadAlt } from 'react-icons/fa';
 
 const Dashboard = () => {
     const { user } = useAuth();
@@ -41,6 +42,17 @@ const Dashboard = () => {
             >
                 <TbListDetails className="mr-2" />
                 View all study sessions
+            </NavLink>
+        </li>
+        <li className="text-[16px]">
+            <NavLink
+                className={({ isActive }) =>
+                    `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
+                }
+                to="/dashboard/uploadMaterials"
+            >
+                <FaCloudUploadAlt className="mr-2" />
+                Upload materials
             </NavLink>
         </li>
     </>
