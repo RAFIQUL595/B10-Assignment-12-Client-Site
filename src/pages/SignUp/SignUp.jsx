@@ -4,7 +4,7 @@ import signupLottie from '../../assets/signup/Signup.json'
 import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 import useAuth from './../../hooks/useAuth';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import toast from 'react-hot-toast';
@@ -73,6 +73,8 @@ const SignUp = () => {
                 </div>
                 <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
                     <form onSubmit={handleSubmit(onSubmit)} className="card-body border-2 rounded-lg">
+
+                        {/* Name */}
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Name <span className="text-red-500">*</span></span>
@@ -80,6 +82,8 @@ const SignUp = () => {
                             <input {...register('name', { required: true })} type="text" placeholder="Enter Your Name" className="input input-bordered" />
                             {errors.name && <span className="text-red-600">Name is required</span>}
                         </div>
+
+                        {/* Email */}
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Email <span className="text-red-500">*</span></span>
@@ -87,6 +91,8 @@ const SignUp = () => {
                             <input {...register('email', { required: true })} type="email" placeholder="Enter Your Email" className="input input-bordered" />
                             {errors.email && <span className="text-red-600">Email is required</span>}
                         </div>
+
+                        {/* Image */}
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Photo <span className="text-red-500">*</span></span>
@@ -94,6 +100,8 @@ const SignUp = () => {
                             <input {...register('image', { required: true })} type="file" className="file-input w-full max-w-xs" />
                             {errors.image && <span className="text-red-600">Photo is required</span>}
                         </div>
+
+                        {/* Role */}
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">
@@ -113,6 +121,7 @@ const SignUp = () => {
                                 <span className="text-red-600">Role is required</span>)}
                         </div>
 
+                        {/* Password */}
                         <div className="form-control relative">
                             <label className="label">
                                 <span className="label-text">Password <span className="text-red-500">*</span></span>
@@ -132,8 +141,18 @@ const SignUp = () => {
                                 />
                             )}
                         </div>
+
+                        {/* Sign Up Button */}
                         <div className="form-control mt-6">
                             <button className="btn btn-primary uppercase">Sign up</button>
+                        </div>
+                        <div className="text-center">
+                            <p>
+                                Already have an account?{" "}
+                                <Link to="/login" className="text-blue-500">
+                                    Login
+                                </Link>
+                            </p>
                         </div>
                     </form>
                 </div>

@@ -4,9 +4,22 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { IoCreateOutline } from 'react-icons/io5';
 import { RiMenu3Line } from 'react-icons/ri';
 import { TbListDetails } from 'react-icons/tb';
+import useAxiosSecure from './../hooks/useAxiosSecure';
+import { useQuery } from '@tanstack/react-query';
 
 const Dashboard = () => {
     const { user } = useAuth();
+    const axiosSecure = useAxiosSecure();
+
+    // User get
+    const { data: users = [] } = useQuery({
+        queryKey: ['users'],
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/users/${user.email}`)
+            return res.data
+        }
+    })
+
     const sideNavOption = <>
         <li className="text-[16px]">
             <NavLink
@@ -41,12 +54,12 @@ const Dashboard = () => {
                     <img
                         className="rounded-[50%]"
                         alt="User Profile"
-                        src={user?.photoURL || '/default-profile.png'}
+                        src={user?.photoURL}
                     />
                 </div>
                 <div className="text-center ml-5 md:ml-0">
-                    <h2 className="font-bold text-2xl">{user?.displayName || 'User'}</h2>
-                    <p className="text-sm text-gray-600">{user?.role || 'Member'}</p>
+                    <h2 className="font-bold text-2xl">{users?.name}</h2>
+                    <p className="text-lg text-white">{users?.role}</p>
                 </div>
 
                 {/* Dropdown Menu for Small Screens */}

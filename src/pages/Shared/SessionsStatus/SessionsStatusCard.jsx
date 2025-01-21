@@ -2,18 +2,41 @@ import React from 'react';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import useAuth from '../../../hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
+import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
 
 const SessionsStatusCard = ({ sectionTitle, status, statusTitle, noStatus }) => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
 
+    // Get all sessions data
     const { data: sessions = [], refetch } = useQuery({
         queryKey: ['sessions'],
         queryFn: async () => {
-            const res = await axiosSecure(`/sessions/${user.email}`);
+            const res = await axiosSecure.get(`/sessions/${user.email}`);
             return res.data;
         }
     });
+
+    // New approval request
+    const handelResendApproval = async (_id) => {
+        const res = await axiosSecure.patch(`/sessions/${_id}`)
+            .then(res => {
+                if (res.data.matchedCount > 0) {
+                    refetch();
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: `Resend Approval successfully!`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+                else (error => {
+                    toast.error('Request failed. No changes were made.')
+                })
+            })
+    }
 
     return (
         <div className="mb-20">
@@ -67,6 +90,7 @@ const SessionsStatusCard = ({ sectionTitle, status, statusTitle, noStatus }) => 
                                 </div>
                                 {status === 'rejected' && (
                                     <button
+                                        onClick={() => handelResendApproval(session._id)}
                                         className="btn btn-primary py-2"
                                     >
                                         Resend Approval
