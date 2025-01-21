@@ -50,7 +50,7 @@ const CreateSession = () => {
         // show success popup
         reset();
         Swal.fire({
-          title: "Session Add Successful!",
+          title: "Session Create Successfully!",
           icon: "success",
           draggable: true
         });

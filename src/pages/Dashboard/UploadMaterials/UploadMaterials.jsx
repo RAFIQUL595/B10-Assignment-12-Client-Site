@@ -1,31 +1,73 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import SectionTitle from '../../../components/SectionTitle/SectionTitle';
-import { useForm } from 'react-hook-form';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import useAuth from '../../../hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
+import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
+import useAxiosPublic from '../../../hooks/useAxiosPublic';
+import UploadModal from '../../../components/SectionTitle/UploadModal/UploadModal';
+
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const UploadMaterials = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    const axiosPublic = useAxiosPublic();
+    const [selectedMaterial, setSelectedMaterial] = useState(null);
 
-    // Get all sessions data
-    const { data: sessions = [], refetch } = useQuery({
-        queryKey: ['sessions'],
+    // Fetch study materials
+    const { data: materials = [], refetch } = useQuery({
+        queryKey: ['materials'],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/tutorSessions/${user.email}`);
+            const res = await axiosSecure.get(`/tutorSessions/${user?.email}`);
             return res.data;
         },
     });
 
+    const handleOpenModal = (material) => {
+        setSelectedMaterial(material);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedMaterial(null);
+    };
+
     const onSubmit = async (data) => {
-        // console.log(data);
+        const imageFile = { image: data.image[0] };
+        const res = await axiosPublic.post(image_hosting_api, imageFile, {
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
+        });
+
+        if (res.data.success) {
+            const imageUrl = res.data.data.display_url;
+
+            const materialData = {
+                title: data.title,
+                sessionId: data.sessionId,
+                tutorEmail: data.tutorEmail,
+                image: imageUrl,
+                googleDrive: data.googleDrive,
+            };
+
+            const materialRes = await axiosSecure.post('/uploadMaterial', materialData);
+            if (materialRes.data.insertedId) {
+                setSelectedMaterial(null);
+                Swal.fire({
+                    title: 'Material Uploaded Successfully!',
+                    icon: 'success',
+                });
+                refetch();
+            } else {
+                toast.error('Failed to upload material. Please try again.');
+            }
+        } else {
+            toast.error('Image upload failed. Please try again.');
+        }
     };
 
     return (
@@ -33,86 +75,45 @@ const UploadMaterials = () => {
             <Helmet>
                 <title>Upload Materials | Study Platform</title>
             </Helmet>
-            <SectionTitle heading="Upload Study Materials"></SectionTitle>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                {sessions.map((session) => (
-                    <div key={session._id} className="space-y-4">
+            <SectionTitle heading="Upload Study Materials" />
 
-                        {/* Session Title */}
-                        <div>
-                            <label className="block text-lg font-medium mb-1">Session Title</label>
-                            <input
-                                type="text"
-                                defaultValue={session?.title}
-                                readOnly
-                                className="input input-bordered w-full bg-gray-100"
-                                {...register('title')}
+            {/* Materials Card */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {materials.map((material) => (
+                    <div
+                        key={material._id}
+                        className="card card-compact bg-base-100 shadow-xl"
+                    >
+                        <figure>
+                            <img
+                                src={material.sessionImage}
+                                alt={material.title}
+                                className="w-full h-48 object-cover"
                             />
-                            {errors.title && <span className="text-red-600">Session Title is required</span>}
-                        </div>
-
-                        {/* Study Session ID */}
-                        <div>
-                            <label className="block text-lg font-medium mb-1">Study Session ID</label>
-                            <input
-                                type="text"
-                                defaultValue={session?._id}
-                                readOnly
-                                className="input input-bordered w-full bg-gray-100"
-                                {...register('sessionId')}
-                            />
-                            {errors.sessionId && <span className="text-red-600">Study Session ID is required</span>}
-                        </div>
-
-                        {/* Tutor Email */}
-                        <div>
-                            <label className="block text-lg font-medium mb-1">Tutor Email</label>
-                            <input
-                                type="email"
-                                defaultValue={session?.tutorEmail}
-                                readOnly
-                                className="input input-bordered w-full bg-gray-100"
-                                {...register('tutorEmail')}
-                            />
-                            {errors.tutorEmail && <span className="text-red-600">Tutor Email is required</span>}
+                        </figure>
+                        <div className="card-body">
+                            <h2 className="card-title">{material.title}</h2>
+                            <p className="text-[16px]">Tutor Name: {material.tutorName}</p>
+                            <div className="card-actions justify-center">
+                                <button
+                                    className="btn btn-outline btn-primary"
+                                    onClick={() => handleOpenModal(material)}
+                                >
+                                    Upload Materials
+                                </button>
+                            </div>
                         </div>
                     </div>
                 ))}
+            </div>
 
-                {/* Image Upload */}
-                <div>
-                    <label className="block text-lg font-medium mb-1">
-                        Upload Image<span className="text-red-500">*</span>
-                    </label>
-                    <input
-                        type="file"
-                        className="file-input file-input-bordered w-full"
-                        {...register('image', { required: true })}
-                    />
-                    {errors.image && <span className="text-red-600">Upload Image is required</span>}
-                </div>
-
-                {/* Google Drive Link */}
-                <div>
-                    <label className="block text-lg font-medium mb-1">
-                        Google Drive Link<span className="text-red-500">*</span>
-                    </label>
-                    <input
-                        type="url"
-                        placeholder="Enter Google Drive link"
-                        className="input input-bordered w-full"
-                        {...register('googleDrive', { required: true })}
-                    />
-                    {errors.googleDrive && <span className="text-red-600">Google Drive Link is required</span>}
-                </div>
-
-                {/* Submit Button */}
-                <div>
-                    <button type="submit" className="btn btn-success w-full">
-                        Submit Material
-                    </button>
-                </div>
-            </form>
+            {selectedMaterial && (
+                <UploadModal
+                    selectedMaterial={selectedMaterial}
+                    onSubmit={onSubmit}
+                    handleCloseModal={handleCloseModal}>
+                </UploadModal>
+            )}
         </div>
     );
 };
