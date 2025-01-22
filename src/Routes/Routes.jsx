@@ -7,6 +7,7 @@ import CreateSession from "../pages/Dashboard/CreateSession/CreateSession";
 import ViewAllSessions from "../pages/Dashboard/ViewAllSessions/ViewAllSessions";
 import Login from "../pages/Login/Login";
 import UploadMaterials from "../pages/Dashboard/UploadMaterials/UploadMaterials";
+import AllMaterials from "../pages/Dashboard/AllMaterials/AllMaterials";
 
 const router = createBrowserRouter([
     {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
             {
                 path: "uploadMaterials",
                 element: <UploadMaterials></UploadMaterials>
+            },
+            {
+                path: "allMaterials",
+                element: <AllMaterials></AllMaterials>
             }
         ]
     }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import SectionTitle from '../../../components/SectionTitle/SectionTitle';
+import SectionTitle from '../SectionTitle/SectionTitle';
+
 
 const UploadModal = ({ selectedMaterial, onSubmit, handleCloseModal, }) => {
     const { register, handleSubmit, formState: { errors }, } = useForm();
@@ -8,7 +9,7 @@ const UploadModal = ({ selectedMaterial, onSubmit, handleCloseModal, }) => {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-                <SectionTitle heading="Upload Materials" />
+                <SectionTitle heading="Upload Materials"></SectionTitle>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <div>
                         <label className="block text-lg font-medium mb-1">Session Title</label>

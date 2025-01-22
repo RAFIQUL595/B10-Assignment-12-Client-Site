@@ -55,6 +55,17 @@ const Dashboard = () => {
                 Upload materials
             </NavLink>
         </li>
+        <li className="text-[16px]">
+            <NavLink
+                className={({ isActive }) =>
+                    `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
+                }
+                to="/dashboard/allMaterials"
+            >
+                <TbListDetails className="mr-2" />
+                View All Materials
+            </NavLink>
+        </li>
     </>
 
     return (
