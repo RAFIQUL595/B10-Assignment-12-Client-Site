@@ -5,6 +5,8 @@ import useAxiosSecure from './../../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import MaterialsCard from '../../../components/MaterialsCard/MaterialsCard';
+import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
 
 const AllMaterials = () => {
     const { user } = useAuth();
@@ -23,8 +25,34 @@ const AllMaterials = () => {
         console.log('Update material with id:', id);
     };
 
-    const handleDeleteMaterials = (id) => {
-        console.log('Delete material with id:', id);
+    // Handle material delete
+    const handleDeleteMaterials = async (id) => {
+        // Show confirmation dialog first
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be deleted this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        });
+
+        if (result.isConfirmed) {
+            // Proceed with delete if user confirms
+            const response = await axiosSecure.delete(`/deleteMaterial/${id}`);
+            // Validate response
+            if (response.data.deletedCount > 0) {
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "The material has been deleted.",
+                    icon: "success"
+                });
+                refetch()
+            } else {
+                toast.error("Deletion failed. No records were deleted.");
+            }
+        }
     };
 
     return (
