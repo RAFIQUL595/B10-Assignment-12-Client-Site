@@ -23,7 +23,7 @@ const AuthProvider = ({ children }) => {
     }
 
     // Sign Out User
-    const handelSignOut = () => {
+    const handelLogOut = () => {
         setLoading(true);
         toast.success("Log Out Successfully");
         return signOut(auth);
@@ -62,7 +62,7 @@ const AuthProvider = ({ children }) => {
         handelSignUp,
         handelLogin,
         updateUser,
-        handelSignOut
+        handelLogOut
     }
 
     return (

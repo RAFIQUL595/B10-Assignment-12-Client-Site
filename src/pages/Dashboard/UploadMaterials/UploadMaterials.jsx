@@ -53,6 +53,7 @@ const UploadMaterials = () => {
                 tutorEmail: data.tutorEmail,
                 image: imageUrl,
                 googleDrive: data.googleDrive,
+                uploadTime: new Date().toLocaleTimeString()
             };
 
             const materialRes = await axiosSecure.post('/uploadMaterial', materialData);

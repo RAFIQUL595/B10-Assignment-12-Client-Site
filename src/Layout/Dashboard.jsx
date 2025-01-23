@@ -1,72 +1,112 @@
 import React from 'react';
 import useAuth from './../hooks/useAuth';
 import { NavLink, Outlet } from 'react-router-dom';
-import { IoCreateOutline } from 'react-icons/io5';
+import { IoCreateOutline, IoHomeOutline } from 'react-icons/io5';
 import { RiMenu3Line } from 'react-icons/ri';
 import { TbListDetails } from 'react-icons/tb';
 import useAxiosSecure from './../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import { FaCloudUploadAlt } from 'react-icons/fa';
+import { CiLogout } from 'react-icons/ci';
 
 const Dashboard = () => {
-    const { user } = useAuth();
+    const { user, handelLogOut } = useAuth();
     const axiosSecure = useAxiosSecure();
 
-    // User get
+    // Fetch user data
     const { data: users = [] } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
             const res = await axiosSecure.get(`/users/${user.email}`)
-            return res.data
+            return res.data;
         }
-    })
+    });
 
-    const sideNavOption = <>
-        <li className="text-[16px]">
-            <NavLink
-                className={({ isActive }) =>
-                    `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
-                }
-                to="/dashboard/createSession"
-            >
-                <IoCreateOutline className="mr-2" />
-                Create Study Session
-            </NavLink>
-        </li>
-        <li className="text-[16px]">
-            <NavLink
-                className={({ isActive }) =>
-                    `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
-                }
-                to="/dashboard/viewAllSession"
-            >
-                <TbListDetails className="mr-2" />
-                View all study sessions
-            </NavLink>
-        </li>
-        <li className="text-[16px]">
-            <NavLink
-                className={({ isActive }) =>
-                    `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
-                }
-                to="/dashboard/uploadMaterials"
-            >
-                <FaCloudUploadAlt className="mr-2" />
-                Upload materials
-            </NavLink>
-        </li>
-        <li className="text-[16px]">
-            <NavLink
-                className={({ isActive }) =>
-                    `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
-                }
-                to="/dashboard/allMaterials"
-            >
-                <TbListDetails className="mr-2" />
-                View All Materials
-            </NavLink>
-        </li>
-    </>
+    const isTutor = true;
+
+    const sideNavOption = (
+        <>
+            {isTutor ? (
+                <>
+                    <li className="text-[16px]">
+                        <NavLink
+                            className={({ isActive }) =>
+                                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
+                            }
+                            to="/dashboard/createSession"
+                        >
+                            <IoCreateOutline className="mr-2" />
+                            Create Study Session
+                        </NavLink>
+                    </li>
+                    <li className="text-[16px]">
+                        <NavLink
+                            className={({ isActive }) =>
+                                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
+                            }
+                            to="/dashboard/viewAllSession"
+                        >
+                            <TbListDetails className="mr-2" />
+                            View all study sessions
+                        </NavLink>
+                    </li>
+                    <li className="text-[16px]">
+                        <NavLink
+                            className={({ isActive }) =>
+                                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
+                            }
+                            to="/dashboard/uploadMaterials"
+                        >
+                            <FaCloudUploadAlt className="mr-2" />
+                            Upload materials
+                        </NavLink>
+                    </li>
+                    <li className="text-[16px]">
+                        <NavLink
+                            className={({ isActive }) =>
+                                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
+                            }
+                            to="/dashboard/allMaterials"
+                        >
+                            <TbListDetails className="mr-2" />
+                            View All Materials
+                        </NavLink>
+                    </li>
+                </>
+            ) :
+                <>
+
+                </>
+            }
+
+            {/* shared nav links */}
+            <div className="divider"></div>
+            <li className="text-[16px]">
+                <NavLink
+                    className={({ isActive }) =>
+                        `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
+                    }
+                    to="/"
+                >
+                    <IoHomeOutline className="mr-2" />
+                    Home
+                </NavLink>
+            </li>
+            <li className="text-[16px]">
+                <NavLink
+                    className={({ isActive }) =>
+                        `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
+                    }
+                    to="/"
+                >
+                    <button onClick={handelLogOut} className='flex items-center'>
+                        <CiLogout className="mr-2" />
+                        Logout
+                    </button>
+                </NavLink>
+            </li>
+        </>
+    );
 
     return (
         <div className="md:flex max-w-screen-xl mx-auto my-10">
@@ -103,7 +143,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Sidebar Menu for Larger Screens */}
-                <ul className="hidden md:block space-y-3 ">
+                <ul className="hidden md:block space-y-3">
                     {sideNavOption}
                 </ul>
             </div>

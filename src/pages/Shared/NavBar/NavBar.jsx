@@ -7,7 +7,7 @@ import { FaUserPlus } from 'react-icons/fa';
 import useAuth from '../../../hooks/useAuth';
 
 const Navbar = () => {
-    const { user, handelSignOut } = useAuth();
+    const { user,  handelLogOut } = useAuth();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const toggleDropdownHandler = () => {
@@ -110,7 +110,7 @@ const Navbar = () => {
                                         </Link>
                                     </li>
                                     <li>
-                                        <button onClick={handelSignOut} className="text-[16px]">
+                                        <button onClick={handelLogOut} className="text-[16px]">
                                             Logout <CiLogout />
                                         </button>
                                     </li>
