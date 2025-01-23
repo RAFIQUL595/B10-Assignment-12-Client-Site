@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../../../assets/logo.png'
+import logo from '../../../assets/logo.png';
 import { IoHomeOutline } from 'react-icons/io5';
 import { CiLogin, CiLogout } from 'react-icons/ci';
 import { FaUserPlus } from 'react-icons/fa';
 import useAuth from '../../../hooks/useAuth';
+import useTutor from '../../../hooks/useTutor';
 
 const Navbar = () => {
-    const { user,  handelLogOut } = useAuth();
+    const { user, handelLogOut } = useAuth();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isTutor] = useTutor();
 
     const toggleDropdownHandler = () => {
         setIsDropdownOpen((prev) => !prev);
@@ -36,9 +38,16 @@ const Navbar = () => {
         };
     }, [isDropdownOpen]);
 
-    const navOptions = <>
-        <li className='text-lg'><Link to="/"><IoHomeOutline />Home</Link></li>
-    </>
+    const navOptions = (
+        <>
+            <li className='text-lg'>
+                <Link to="/">
+                    <IoHomeOutline /> Home
+                </Link>
+            </li>
+        </>
+    );
+
     return (
         <div className="navbar bg-base-100 shadow-md px-4">
             {/* Navbar Start */}
@@ -68,7 +77,8 @@ const Navbar = () => {
                 </div>
                 {/* Logo */}
                 <Link to="/" className="text-xl flex items-center">
-                    <img className='w-20' src={logo} alt="" />   <span className='font-bold hidden md:block '>Study Platform</span>
+                    <img className='w-20' src={logo} alt="" />
+                    <span className='font-bold hidden md:block'>Study Platform</span>
                 </Link>
             </div>
 
@@ -83,8 +93,7 @@ const Navbar = () => {
                     <div className="flex items-center space-x-4">
                         {/* Profile Dropdown */}
                         <div
-                            className={`dropdown-container dropdown dropdown-end ${isDropdownOpen ? "dropdown-open" : ""
-                                }`}
+                            className={`dropdown-container dropdown dropdown-end ${isDropdownOpen ? "dropdown-open" : "dropdown-close"}`}
                         >
                             <div
                                 tabIndex={0}
@@ -104,11 +113,22 @@ const Navbar = () => {
                                     <li className="font-bold text-center text-[16px]">
                                         {user.displayName}
                                     </li>
-                                    <li>
-                                        <Link to="/dashboard/createSession">
-                                            <span className="text-[16px]">Dashboard</span>
-                                        </Link>
-                                    </li>
+
+                                    {/* Conditional Rendering */}
+                                    { user && isTutor ? (
+                                        <li>
+                                            <Link to="/dashboard/createSession">
+                                                <span className="text-[16px]">Dashboard</span>
+                                            </Link>
+                                        </li>
+                                    ) : (
+                                        <li>
+                                            <Link to="/dashboard">
+                                                <span className="text-[16px]">Dashboard</span>
+                                            </Link>
+                                        </li>
+                                    )}
+
                                     <li>
                                         <button onClick={handelLogOut} className="text-[16px]">
                                             Logout <CiLogout />
@@ -124,7 +144,7 @@ const Navbar = () => {
                             <CiLogin /> Login
                         </Link>
                         <Link to="/signup" className="btn btn-outline md:text-lg text-blue-500 mr-16 md:mr-0">
-                            <FaUserPlus />Sign Up
+                            <FaUserPlus /> Sign Up
                         </Link>
                     </div>
                 )}

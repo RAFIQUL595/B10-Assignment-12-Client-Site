@@ -8,6 +8,7 @@ import ViewAllSessions from "../pages/Dashboard/ViewAllSessions/ViewAllSessions"
 import Login from "../pages/Login/Login";
 import UploadMaterials from "../pages/Dashboard/UploadMaterials/UploadMaterials";
 import AllMaterials from "../pages/Dashboard/AllMaterials/AllMaterials";
+import TutorRoute from "./TutorRoute";
 
 const router = createBrowserRouter([
     {
@@ -35,19 +36,19 @@ const router = createBrowserRouter([
             // Tutor routes
             {
                 path: "createSession",
-                element: <CreateSession></CreateSession>
+                element: <TutorRoute><CreateSession></CreateSession></TutorRoute>
             },
             {
                 path: "viewAllSession",
-                element: <ViewAllSessions></ViewAllSessions>
+                element: <TutorRoute><ViewAllSessions></ViewAllSessions></TutorRoute>
             },
             {
                 path: "uploadMaterials",
-                element: <UploadMaterials></UploadMaterials>
+                element: <TutorRoute><UploadMaterials></UploadMaterials></TutorRoute>
             },
             {
                 path: "allMaterials",
-                element: <AllMaterials></AllMaterials>
+                element: <TutorRoute><AllMaterials></AllMaterials></TutorRoute>
             }
         ]
     }

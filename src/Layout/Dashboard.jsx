@@ -8,6 +8,7 @@ import useAxiosSecure from './../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import { CiLogout } from 'react-icons/ci';
+import useTutor from '../hooks/useTutor';
 
 const Dashboard = () => {
     const { user, handelLogOut } = useAuth();
@@ -22,11 +23,11 @@ const Dashboard = () => {
         }
     });
 
-    const isTutor = true;
+    const [isTutor] = useTutor();
 
     const sideNavOption = (
         <>
-            {isTutor ? (
+            {isTutor ?
                 <>
                     <li className="text-[16px]">
                         <NavLink
@@ -73,7 +74,7 @@ const Dashboard = () => {
                         </NavLink>
                     </li>
                 </>
-            ) :
+                :
                 <>
 
                 </>
