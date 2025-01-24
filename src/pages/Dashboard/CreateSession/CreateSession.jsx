@@ -156,8 +156,9 @@ const CreateSession = () => {
         <div>
           <label className="block text-lg font-medium mb-1">Session Duration<span className="text-red-500">*</span></label>
           <input
-            type="number"
-            placeholder="Enter session duration"
+            type="text"
+            defaultValue='0 hours 0 minutes'
+            placeholder="Enter session duration e.g., (0 hours 0 minutes)"
             className="input input-bordered w-full"
             {...register('sessionDuration', { required: true })}
           />

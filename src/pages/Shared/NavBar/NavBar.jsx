@@ -6,11 +6,13 @@ import { CiLogin, CiLogout } from 'react-icons/ci';
 import { FaUserPlus } from 'react-icons/fa';
 import useAuth from '../../../hooks/useAuth';
 import useTutor from '../../../hooks/useTutor';
+import useAdmin from '../../../hooks/useAdmin';
 
 const Navbar = () => {
     const { user, handelLogOut } = useAuth();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isTutor] = useTutor();
+    const [isAdmin] = useAdmin();
 
     const toggleDropdownHandler = () => {
         setIsDropdownOpen((prev) => !prev);
@@ -115,7 +117,13 @@ const Navbar = () => {
                                     </li>
 
                                     {/* Conditional Rendering */}
-                                    { user && isTutor ? (
+                                    {user && isAdmin ? (
+                                        <li>
+                                            <Link to="/dashboard/viewAllUsers">
+                                                <span className="text-[16px]">Dashboard</span>
+                                            </Link>
+                                        </li>
+                                    ) : user && isTutor ? (
                                         <li>
                                             <Link to="/dashboard/createSession">
                                                 <span className="text-[16px]">Dashboard</span>

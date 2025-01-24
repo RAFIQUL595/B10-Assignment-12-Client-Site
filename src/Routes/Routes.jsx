@@ -9,6 +9,8 @@ import Login from "../pages/Login/Login";
 import UploadMaterials from "../pages/Dashboard/UploadMaterials/UploadMaterials";
 import AllMaterials from "../pages/Dashboard/AllMaterials/AllMaterials";
 import TutorRoute from "./TutorRoute";
+import ViewAllUsers from "../pages/Dashboard/ViewAllUsers/ViewAllUsers";
+import AdminRoute from "./AdminRoute";
 
 const router = createBrowserRouter([
     {
@@ -33,7 +35,13 @@ const router = createBrowserRouter([
         path: "dashboard",
         element: <Dashboard></Dashboard>,
         children: [
-            // Tutor routes
+            // Admin Routes
+            {
+                path: "viewAllUsers",
+                element: <AdminRoute><ViewAllUsers></ViewAllUsers></AdminRoute>
+            },
+
+            // Tutor Routes
             {
                 path: "createSession",
                 element: <TutorRoute><CreateSession></CreateSession></TutorRoute>

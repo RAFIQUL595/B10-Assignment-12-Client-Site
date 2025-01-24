@@ -6,9 +6,11 @@ import { RiMenu3Line } from 'react-icons/ri';
 import { TbListDetails } from 'react-icons/tb';
 import useAxiosSecure from './../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
-import { FaCloudUploadAlt } from 'react-icons/fa';
+import { FaCloudUploadAlt, FaUsers } from 'react-icons/fa';
 import { CiLogout } from 'react-icons/ci';
 import useTutor from '../hooks/useTutor';
+import { SiMaterialformkdocs } from 'react-icons/si';
+import useAdmin from '../hooks/useAdmin';
 
 const Dashboard = () => {
     const { user, handelLogOut } = useAuth();
@@ -24,6 +26,7 @@ const Dashboard = () => {
     });
 
     const [isTutor] = useTutor();
+    const [isAdmin] = useAdmin();
 
     const sideNavOption = (
         <>
@@ -69,14 +72,28 @@ const Dashboard = () => {
                             }
                             to="/dashboard/allMaterials"
                         >
-                            <TbListDetails className="mr-2" />
+                            <SiMaterialformkdocs className="mr-2" />
                             View All Materials
                         </NavLink>
                     </li>
                 </>
                 :
                 <>
-
+                    {
+                        isAdmin ? (
+                            <li className="text-[16px]">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`
+                                    }
+                                    to="/dashboard/viewAllUsers"
+                                >
+                                    <FaUsers className="mr-2" />
+                                    View All Users
+                                </NavLink>
+                            </li>
+                        ) : null
+                    }
                 </>
             }
 

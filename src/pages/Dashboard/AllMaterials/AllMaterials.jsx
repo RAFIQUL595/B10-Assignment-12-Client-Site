@@ -18,7 +18,7 @@ const AllMaterials = () => {
     const axiosSecure = useAxiosSecure();
     const axiosPublic = useAxiosPublic();
     const [selectedMaterial, setSelectedMaterial] = useState(null);
-    const { register, handleSubmit, formState: { errors }, } = useForm();
+    const { register, handleSubmit } = useForm();
 
     // Get all materials data
     const { data: materials = [], refetch } = useQuery({
@@ -39,38 +39,43 @@ const AllMaterials = () => {
 
     // Submit material update
     const onSubmit = async (data) => {
-        const imageFile = { image: data.image[0] };
-        const res = await axiosPublic.post(image_hosting_api, imageFile, {
-            headers: {
-                'content-type': 'multipart/form-data',
-            },
-        });
-        console.log(res.data);
+            let imageUrl = selectedMaterial?.image;
+            if (data.image.length > 0) {
+                const formData = new FormData();
+                formData.append('image', data.image[0]);
 
-        if (res.data.success) {
-            const imageUrl = res.data.data.display_url;
+                const res = await axiosPublic.post(image_hosting_api, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+                if (res.data.success) {
+                    imageUrl = res.data.data.display_url;
+                } else {
+                    toast.error('Image upload failed. Please try again.');
+                    return;
+                }
+            }
 
             const materialData = {
                 title: data.title,
                 image: imageUrl,
                 googleDrive: data.googleDrive,
-                uploadTime: new Date().toLocaleTimeString()
+                uploadTime: new Date().toLocaleTimeString(),
             };
 
-            const materialRes = await axiosSecure.patch(`/updateMaterial/${data?.sessionId}`, materialData);
+            const materialRes = await axiosSecure.patch(`/updateMaterial/${data.sessionId}`, materialData);
             if (materialRes.data.modifiedCount) {
                 setSelectedMaterial(null);
                 Swal.fire({
-                    title: 'Material Uploaded Successfully!',
+                    title: 'Material Updated Successfully!',
                     icon: 'success',
                 });
                 refetch();
             } else {
-                toast.error('Failed to upload material. Please try again.');
+                toast.error('Failed to update material. Please try again.');
             }
-        } else {
-            toast.error('Image upload failed. Please try again.');
-        }
     };
 
     // Handle material delete
@@ -146,7 +151,7 @@ const AllMaterials = () => {
                         <SectionTitle heading="Update Materials"></SectionTitle>
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                             <div>
-                                <label className="block text-lg font-medium mb-1">Session Title</label>
+                                <label className="block text-lg font-medium mb-1">Title</label>
                                 <input
                                     type="text"
                                     defaultValue={selectedMaterial?.title}
@@ -203,7 +208,7 @@ const AllMaterials = () => {
 
                             <div>
                                 <button type="submit" className="btn btn-success w-full">
-                                    Submit Material
+                                    Submit Update
                                 </button>
                                 <button
                                     type="button"
