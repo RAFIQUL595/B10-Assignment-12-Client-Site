@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SectionTitle from './../../../components/SectionTitle/SectionTitle';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from './../../../hooks/useAxiosSecure';
@@ -7,10 +7,18 @@ import { Helmet } from 'react-helmet-async';
 import MaterialsCard from '../../../components/MaterialsCard/MaterialsCard';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
+import useAxiosPublic from '../../../hooks/useAxiosPublic';
+import { useForm } from 'react-hook-form';
+
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const AllMaterials = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
+    const axiosPublic = useAxiosPublic();
+    const [selectedMaterial, setSelectedMaterial] = useState(null);
+    const { register, handleSubmit, formState: { errors }, } = useForm();
 
     // Get all materials data
     const { data: materials = [], refetch } = useQuery({
@@ -21,8 +29,48 @@ const AllMaterials = () => {
         },
     });
 
-    const handleUpdateMaterials = (id) => {
-        console.log('Update material with id:', id);
+    const handleOpenModal = (material) => {
+        setSelectedMaterial(material);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedMaterial(null);
+    };
+
+    // Submit material update
+    const onSubmit = async (data) => {
+        const imageFile = { image: data.image[0] };
+        const res = await axiosPublic.post(image_hosting_api, imageFile, {
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
+        });
+        console.log(res.data);
+
+        if (res.data.success) {
+            const imageUrl = res.data.data.display_url;
+
+            const materialData = {
+                title: data.title,
+                image: imageUrl,
+                googleDrive: data.googleDrive,
+                uploadTime: new Date().toLocaleTimeString()
+            };
+
+            const materialRes = await axiosSecure.patch(`/updateMaterial/${data?.sessionId}`, materialData);
+            if (materialRes.data.modifiedCount) {
+                setSelectedMaterial(null);
+                Swal.fire({
+                    title: 'Material Uploaded Successfully!',
+                    icon: 'success',
+                });
+                refetch();
+            } else {
+                toast.error('Failed to upload material. Please try again.');
+            }
+        } else {
+            toast.error('Image upload failed. Please try again.');
+        }
     };
 
     // Handle material delete
@@ -73,12 +121,12 @@ const AllMaterials = () => {
                         />
                     </figure>
                 )}
-                tutorInfo={(material) => <p>Tutor Email: {material.tutorEmail}</p>}
+                tutorInfo={(material) => <p>Google Drive: {material.googleDrive}</p>}
                 button={(material) => (
                     <div className="card-actions justify-between">
                         <button
                             className="btn btn-warning btn-sm"
-                            onClick={() => handleUpdateMaterials(material._id)}
+                            onClick={() => handleOpenModal(material)}
                         >
                             Update
                         </button>
@@ -92,6 +140,83 @@ const AllMaterials = () => {
                 )}
             >
             </MaterialsCard >
+            {selectedMaterial && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                        <SectionTitle heading="Update Materials"></SectionTitle>
+                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                            <div>
+                                <label className="block text-lg font-medium mb-1">Session Title</label>
+                                <input
+                                    type="text"
+                                    defaultValue={selectedMaterial?.title}
+                                    className="input input-bordered w-full"
+                                    {...register('title')}
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-lg font-medium mb-1">Study Session ID</label>
+                                <input
+                                    type="text"
+                                    defaultValue={selectedMaterial?._id}
+                                    readOnly
+                                    className="input input-bordered w-full bg-gray-100"
+                                    {...register('sessionId')}
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-lg font-medium mb-1">Tutor Email</label>
+                                <input
+                                    type="email"
+                                    defaultValue={selectedMaterial?.tutorEmail}
+                                    readOnly
+                                    className="input input-bordered w-full bg-gray-100"
+                                    {...register('tutorEmail')}
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-lg font-medium mb-1">
+                                    Upload Image
+                                </label>
+                                <input
+                                    type="file"
+                                    className="file-input file-input-bordered w-full"
+                                    {...register('image')}
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-lg font-medium mb-1">
+                                    Google Drive Link
+                                </label>
+                                <input
+                                    type="url"
+                                    placeholder="Enter Google Drive link"
+                                    defaultValue={selectedMaterial?.googleDrive}
+                                    className="input input-bordered w-full"
+                                    {...register('googleDrive')}
+                                />
+                            </div>
+
+                            <div>
+                                <button type="submit" className="btn btn-success w-full">
+                                    Submit Material
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn-outline btn-danger w-full mt-2"
+                                    onClick={handleCloseModal}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -12,13 +12,11 @@ const UploadModal = ({ selectedMaterial, onSubmit, handleCloseModal, }) => {
                 <SectionTitle heading="Upload Materials"></SectionTitle>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <div>
-                        <label className="block text-lg font-medium mb-1">Session Title</label>
+                        <label className="block text-lg font-medium mb-1">Title<span className="text-red-500">*</span></label>
                         <input
                             type="text"
-                            defaultValue={selectedMaterial?.title}
-                            readOnly
-                            className="input input-bordered w-full bg-gray-100"
-                            {...register('title')}
+                            className="input input-bordered w-full"
+                            {...register('title', { required: true })}
                         />
                         {errors.title && (
                             <span className="text-red-600">Session Title is required</span>
