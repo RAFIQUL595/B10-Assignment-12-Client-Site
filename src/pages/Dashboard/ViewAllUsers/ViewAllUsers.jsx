@@ -3,19 +3,30 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import Swal from 'sweetalert2';
-import toast from 'react-hot-toast';
 
 const ViewAllUsers = () => {
     const axiosSecure = useAxiosSecure();
+    const [searchQuery, setSearchQuery] = useState("");
     const [role, setRole] = useState("");
+
+    // User fetch
     const { data: users = [], refetch } = useQuery({
-        queryKey: ['users'],
+        queryKey: ['users', searchQuery],
         queryFn: async () => {
-            const res = await axiosSecure.get('/users');
+            const url = searchQuery
+                ? `/users/search?query=${searchQuery}`
+                : '/users';
+            const res = await axiosSecure.get(url);
             return res.data;
-        }
+        },
     });
 
+    // Search Handle
+    const handleSearch = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
+    // Role Update
     const handleRoleUpdate = async (userId) => {
         if (!role) {
             Swal.fire({
@@ -26,9 +37,7 @@ const ViewAllUsers = () => {
             });
             return;
         }
-        if(role>0){
-            toast.error('pllll')
-        }
+
         const res = await axiosSecure.patch(`/users/role/${userId}`, { role });
         if (res.data.matchedCount > 0) {
             Swal.fire({
@@ -46,11 +55,21 @@ const ViewAllUsers = () => {
             <Helmet>
                 <title>View All Users | Study Platform</title>
             </Helmet>
-            <div className='flex justify-between'>
+            <div className='flex justify-between items-center mb-5'>
                 <h1 className='text-lg font-bold'>
                     All Users: <span className='bg-blue-300 text-white px-2 py-1 rounded-[50%]'>{users.length}</span>
                 </h1>
+                <div>
+                    <input
+                        type="text"
+                        placeholder="Search by name or email"
+                        className="border px-3 py-1 rounded"
+                        onChange={handleSearch}
+                        value={searchQuery}
+                    />
+                </div>
             </div>
+
             <div className="overflow-x-auto my-10">
                 <table className="min-w-full border-collapse border border-gray-200 rounded-lg">
                     <thead>

@@ -151,9 +151,9 @@ const Dashboard = () => {
   );
 
   return (
-    <div className="md:flex max-w-screen-xl mx-auto my-10">
+    <div className="lg:flex max-w-screen-xl mx-auto my-10">
       {/* Sidebar Navigation */}
-      <div className="md:w-80 flex md:flex-col items-center space-y-5 bg-slate-400 py-10">
+      <div className="lg:w-80 flex lg:flex-col justify-between lg:justify-start items-center space-y-5 bg-slate-400 py-10 md:px-10">
         {/* User Profile */}
         <div className="w-16 ml-5 md:ml-0">
           <img
@@ -168,7 +168,7 @@ const Dashboard = () => {
         </div>
 
         {/* Dropdown Menu for Small Screens */}
-        <div className="dropdown md:hidden relative z-10 mr-10">
+        <div className="dropdown lg:hidden relative z-10 mr-10">
           <button
             onClick={toggleDropdown}
             className="btn btn-ghost flex items-center"
@@ -183,11 +183,11 @@ const Dashboard = () => {
         </div>
 
         {/* Sidebar Menu for Larger Screens */}
-        <ul className="hidden md:block space-y-3">{sideNavOption}</ul>
+        <ul className="hidden lg:block space-y-3">{sideNavOption}</ul>
       </div>
 
       {/* Main Content Area */}
-      <div className="md:flex-1 mx-10">
+      <div className="lg:flex-1 mx-10">
         <Outlet />
       </div>
     </div>
