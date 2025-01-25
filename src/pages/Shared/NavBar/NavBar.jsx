@@ -5,14 +5,15 @@ import { IoHomeOutline } from 'react-icons/io5';
 import { CiLogin, CiLogout } from 'react-icons/ci';
 import { FaUserPlus } from 'react-icons/fa';
 import useAuth from '../../../hooks/useAuth';
-import useTutor from '../../../hooks/useTutor';
-import useAdmin from '../../../hooks/useAdmin';
+import useAdmin from './../../../hooks/useAdmin';
+import useTutor from './../../../hooks/useTutor';
+
 
 const Navbar = () => {
     const { user, handelLogOut } = useAuth();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [isTutor] = useTutor();
     const [isAdmin] = useAdmin();
+    const [isTutor] = useTutor();
 
     const toggleDropdownHandler = () => {
         setIsDropdownOpen((prev) => !prev);
@@ -117,26 +118,33 @@ const Navbar = () => {
                                     </li>
 
                                     {/* Conditional Rendering */}
-                                    {user && isAdmin ? (
-                                        <li>
-                                            <Link to="/dashboard/viewAllUsers">
-                                                <span className="text-[16px]">Dashboard</span>
-                                            </Link>
-                                        </li>
-                                    ) : user && isTutor ? (
-                                        <li>
-                                            <Link to="/dashboard/createSession">
-                                                <span className="text-[16px]">Dashboard</span>
-                                            </Link>
-                                        </li>
-                                    ) : (
-                                        <li>
-                                            <Link to="/dashboard">
-                                                <span className="text-[16px]">Dashboard</span>
-                                            </Link>
-                                        </li>
-                                    )}
-
+                                    {
+                                        isAdmin && (
+                                            <li>
+                                                <Link to="/dashboard/viewAllUsers">
+                                                    <span className="text-[16px]">Dashboard</span>
+                                                </Link>
+                                            </li>
+                                        )
+                                    }
+                                    {
+                                        isTutor && (
+                                            <li>
+                                                <Link to="/dashboard/createSession">
+                                                    <span className="text-[16px]">Dashboard</span>
+                                                </Link>
+                                            </li>
+                                        )
+                                    }
+                                    {
+                                        !isAdmin && !isTutor && (
+                                            <li>
+                                                <Link to="/dashboard/viewBookedSession">
+                                                    <span className="text-[16px]">Dashboard</span>
+                                                </Link>
+                                            </li>
+                                        )
+                                    }
                                     <li>
                                         <button onClick={handelLogOut} className="text-[16px]">
                                             Logout <CiLogout />

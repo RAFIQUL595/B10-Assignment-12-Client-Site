@@ -113,7 +113,7 @@ const AllMaterials = () => {
             <Helmet>
                 <title>View All Materials | Study Platform</title>
             </Helmet>
-            <SectionTitle heading="Uploaded Materials" />
+            <SectionTitle heading="View All Uploaded Materials" />
             <MaterialsCard
                 materials={materials}
                 noMaterials="No materials uploaded yet."

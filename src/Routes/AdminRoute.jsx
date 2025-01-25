@@ -10,7 +10,10 @@ const AdminRoute = ({ children }) => {
     const location = useLocation();
 
     if (loading || isAdminLoading) {
-        return <progress className="progress w-56"></progress>
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <span className="loading loading-bars loading-lg"></span>
+            </div>)
     }
 
     if (user && isAdmin) {
