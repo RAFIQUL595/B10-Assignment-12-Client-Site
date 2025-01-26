@@ -42,8 +42,7 @@ const Dashboard = () => {
             <NavLink
               to="/dashboard/createSession"
               className={({ isActive }) =>
-                `flex items-center p-3 rounded-lg ${
-                  isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
+                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
                 }`
               }
             >
@@ -55,8 +54,7 @@ const Dashboard = () => {
             <NavLink
               to="/dashboard/viewAllSession"
               className={({ isActive }) =>
-                `flex items-center p-3 rounded-lg ${
-                  isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
+                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
                 }`
               }
             >
@@ -68,8 +66,7 @@ const Dashboard = () => {
             <NavLink
               to="/dashboard/uploadMaterials"
               className={({ isActive }) =>
-                `flex items-center p-3 rounded-lg ${
-                  isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
+                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
                 }`
               }
             >
@@ -81,8 +78,7 @@ const Dashboard = () => {
             <NavLink
               to="/dashboard/allMaterials"
               className={({ isActive }) =>
-                `flex items-center p-3 rounded-lg ${
-                  isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
+                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
                 }`
               }
             >
@@ -93,27 +89,39 @@ const Dashboard = () => {
         </>
       )}
       {isAdmin && (
-        <li>
-          <NavLink
-            to="/dashboard/viewAllUsers"
-            className={({ isActive }) =>
-              `flex items-center p-3 rounded-lg ${
-                isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
-              }`
-            }
-          >
-            <FaUsers className="mr-2" />
-            View All Users
-          </NavLink>
-        </li>
+        <>
+          <li>
+            <NavLink
+              to="/dashboard/viewAllUsers"
+              className={({ isActive }) =>
+                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
+                }`
+              }
+            >
+              <FaUsers className="mr-2" />
+              View All Users
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/dashboard/adminViewSession"
+              className={({ isActive }) =>
+                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
+                }`
+              }
+            >
+              <TbListDetails className="mr-2" />
+              View All Study Sessions
+            </NavLink>
+          </li>
+        </>
       )}
       {!isAdmin && !isTutor && (
         <li>
           <NavLink
             to="/dashboard/viewAllUsers"
             className={({ isActive }) =>
-              `flex items-center p-3 rounded-lg ${
-                isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
+              `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
               }`
             }
           >
@@ -129,8 +137,7 @@ const Dashboard = () => {
         <NavLink
           to="/"
           className={({ isActive }) =>
-            `flex items-center p-3 rounded-lg ${
-              isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
+            `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
             }`
           }
         >

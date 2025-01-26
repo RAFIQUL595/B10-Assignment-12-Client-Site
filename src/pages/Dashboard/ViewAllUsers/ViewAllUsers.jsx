@@ -46,6 +46,7 @@ const ViewAllUsers = () => {
                 icon: "success",
                 confirmButtonText: "Okay",
             });
+            setRole("");
             refetch();
         }
     };
@@ -64,7 +65,7 @@ const ViewAllUsers = () => {
                         type="text"
                         placeholder="Search by name or email"
                         className="border px-3 py-1 rounded"
-                        onChange={handleSearch}
+                        onClick={handleSearch}
                         value={searchQuery}
                     />
                 </div>
@@ -104,7 +105,7 @@ const ViewAllUsers = () => {
                                 <td className="px-4 py-2 border border-gray-200 text-center">{user.role}</td>
                                 <td className="px-4 py-2 border border-gray-200 text-center">
                                     <div className="flex justify-center gap-2">
-                                        <select onChange={(e) => setRole(e.target.value)} className="px-3 py-1 text-sm border rounded">
+                                        <select onClick={(e) => setRole(e.target.value)} className="px-3 py-1 text-sm border rounded">
                                             <option value="">Select Role</option>
                                             <option value="Admin">Admin</option>
                                             <option value="Tutor">Tutor</option>

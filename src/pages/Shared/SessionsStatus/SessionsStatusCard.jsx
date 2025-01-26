@@ -1,22 +1,8 @@
 import React from 'react';
-import useAxiosSecure from '../../../hooks/useAxiosSecure';
-import useAuth from '../../../hooks/useAuth';
-import { useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 
-const SessionsStatusCard = ({ sectionTitle, status, statusTitle, noStatus, message }) => {
-    const axiosSecure = useAxiosSecure();
-    const { user } = useAuth();
-
-    // Get all sessions data
-    const { data: sessions = [], refetch } = useQuery({
-        queryKey: ['sessions'],
-        queryFn: async () => {
-            const res = await axiosSecure.get(`/sessions/${user.email}`);
-            return res.data;
-        }
-    });
+const SessionsStatusCard = ({ sessions, sectionTitle, status, statusTitle, noStatus, message, actions }) => {
 
     // New approval request
     const handelResendApproval = async (_id) => {
@@ -91,6 +77,8 @@ const SessionsStatusCard = ({ sectionTitle, status, statusTitle, noStatus, messa
 
                                 {/* Message Show */}
                                 {message}
+
+                                <div>{actions && actions(session)}</div>
 
                                 {/* Resend Button */}
                                 {status === 'rejected' && (
