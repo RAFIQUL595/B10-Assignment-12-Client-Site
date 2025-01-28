@@ -50,7 +50,6 @@ const ViewDetails = () => {
 
     // Handle form submission
     const onSubmit = async (data) => {
-        console.log(data);
         const { review, rating } = data;
 
         const newReview = {
@@ -118,7 +117,7 @@ const ViewDetails = () => {
                             className="input input-bordered w-full bg-gray-100 cursor-not-allowed"
                             defaultValue={user?.displayName}
                             readOnly
-                            {...register('studentName')}
+                            {...register('email')}
                         />
                     </div>
 
@@ -132,7 +131,7 @@ const ViewDetails = () => {
                             className="input input-bordered w-full bg-gray-100 cursor-not-allowed"
                             defaultValue={user?.email}
                             readOnly
-                            {...register('studentEmail')}
+                            {...register('email')}
                         />
                     </div>
 

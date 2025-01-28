@@ -16,6 +16,7 @@ import AdminViewMaterials from "../pages/Dashboard/AdminViewMaterials/AdminViewM
 import SessionDetails from "../components/SessionDetails/SessionDetails";
 import ViewBookedSession from "../pages/Dashboard/ViewBookedSession/ViewBookedSession";
 import ViewDetails from "../components/ViewDetails/ViewDetails";
+import CreateNote from "../pages/Dashboard/CreateNote/CreateNote";
 
 const router = createBrowserRouter([
     {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
         path: "dashboard",
         element: <Dashboard></Dashboard>,
         children: [
+            {
+                path: "createNote",
+                element: <CreateNote></CreateNote>
+            },
             {
                 path: "viewBookedSession",
                 element: <ViewBookedSession></ViewBookedSession>

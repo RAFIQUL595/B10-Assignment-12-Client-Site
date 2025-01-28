@@ -6,7 +6,7 @@ import { RiMenu3Line } from 'react-icons/ri';
 import { TbListDetails } from 'react-icons/tb';
 import useAxiosSecure from './../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
-import { FaCloudUploadAlt, FaUsers } from 'react-icons/fa';
+import { FaBookmark, FaCloudUploadAlt, FaUsers } from 'react-icons/fa';
 import { CiLogout } from 'react-icons/ci';
 import { SiMaterialformkdocs } from 'react-icons/si';
 import useAdmin from '../hooks/useAdmin';
@@ -129,18 +129,32 @@ const Dashboard = () => {
         </>
       )}
       {!isAdmin && !isTutor && (
-        <li>
-          <NavLink
-            to="/dashboard/viewBookedSession"
-            className={({ isActive }) =>
-              `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
-              }`
-            }
-          >
-            <FaUsers className="mr-2" />
-            View booked session
-          </NavLink>
-        </li>
+        <>
+          <li>
+            <NavLink
+              to="/dashboard/viewBookedSession"
+              className={({ isActive }) =>
+                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
+                }`
+              }
+            >
+              <FaBookmark className="mr-2" />
+              View booked session
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/dashboard/createNote"
+              className={({ isActive }) =>
+                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
+                }`
+              }
+            >
+              <IoCreateOutline className="mr-2" />
+              Create Note
+            </NavLink>
+          </li>
+        </>
       )}
 
       {/* Shared nav links */}
