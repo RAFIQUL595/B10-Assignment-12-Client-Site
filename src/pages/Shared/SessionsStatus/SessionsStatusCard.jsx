@@ -1,12 +1,18 @@
 import React from 'react';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
-const SessionsStatusCard = ({ sessions, sectionTitle, status, statusTitle, noStatus, message, actions }) => {
+const SessionsStatusCard = ({ refetch, sessions, sectionTitle, status, statusTitle, noStatus, message, actions }) => {
+    const axiosSecure = useAxiosSecure();
 
     // New approval request
     const handelResendApproval = async (_id) => {
-        const res = await axiosSecure.patch(`/sessions/${_id}`)
+        const rejected = {
+            feedback: '',
+            rejectionReason: ''
+        }
+        const res = await axiosSecure.patch(`/sessions/${_id}`, rejected)
             .then(res => {
                 if (res.data.matchedCount > 0) {
                     refetch();
@@ -78,6 +84,21 @@ const SessionsStatusCard = ({ sessions, sectionTitle, status, statusTitle, noSta
                                 {/* Message Show */}
                                 {message}
 
+                                {/* Reject Reason and Feedback */}
+                                {
+                                    status === 'rejected' && (
+                                        <div className="font-bold">
+                                            <div className='text-gray-500'>
+                                                Rejection Reason: {session.rejectionReason}
+                                            </div>
+                                            <div className='text-orange-400'>
+                                                Feedback: {session.feedback}
+                                            </div>
+                                        </div>
+                                    )
+                                }
+
+                                {/* Approved and Reject Button */}
                                 <div>{actions && actions(session)}</div>
 
                                 {/* Resend Button */}

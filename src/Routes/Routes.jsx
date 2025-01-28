@@ -12,6 +12,7 @@ import TutorRoute from "./TutorRoute";
 import ViewAllUsers from "../pages/Dashboard/ViewAllUsers/ViewAllUsers";
 import AdminRoute from "./AdminRoute";
 import AdminViewSession from "../pages/Dashboard/AdminViewSession/AdminViewSession";
+import AdminViewMaterials from "../pages/Dashboard/AdminViewMaterials/AdminViewMaterials";
 
 const router = createBrowserRouter([
     {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
             {
                 path: "adminViewSession",
                 element: <AdminRoute><AdminViewSession></AdminViewSession></AdminRoute>
+            },
+            {
+                path: "viewAllMaterials",
+                element: <AdminRoute><AdminViewMaterials></AdminViewMaterials></AdminRoute>
             },
 
             // Tutor Routes

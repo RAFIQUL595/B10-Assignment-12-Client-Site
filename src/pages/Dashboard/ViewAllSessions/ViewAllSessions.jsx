@@ -27,13 +27,13 @@ const ViewAllSessions = () => {
             <SectionTitle heading='View All Study Sessions'></SectionTitle>
 
             {/* Pending Sessions */}
-            <SessionsStatusCard sessions={sessions} sectionTitle='Pending Sessions' status='pending' statusTitle={<p className="text-orange-400 font-medium mt-2">Status: Pending</p>} noStatus='Pending' message={<p className='text-orange-400'>Your study sessions has been pending!</p>}></SessionsStatusCard>
+            <SessionsStatusCard refetch={refetch} sessions={sessions} sectionTitle='Pending Sessions' status='pending' statusTitle={<p className="text-orange-400 font-medium mt-2">Status: Pending</p>} noStatus='Pending' message={<p className='text-orange-400'>Your study sessions has been pending!</p>}></SessionsStatusCard>
 
             {/* Approved Sessions */}
-            <SessionsStatusCard sessions={sessions} sectionTitle='Approved Sessions' status='approved' statusTitle={<p className="text-green-500 font-medium mt-2">Status: Approved</p>} noStatus='Approved' message={<p className='text-green-500'>Your study sessions has been approved.</p>}></SessionsStatusCard>
+            <SessionsStatusCard refetch={refetch} sessions={sessions} sectionTitle='Approved Sessions' status='approved' statusTitle={<p className="text-green-500 font-medium mt-2">Status: Approved</p>} noStatus='Approved' message={<p className='text-green-500'>Your study sessions has been approved.</p>}></SessionsStatusCard>
 
             {/* Rejected Sessions */}
-            <SessionsStatusCard sessions={sessions} sectionTitle='Rejected Sessions' status='rejected' statusTitle={<p className="text-red-500 font-medium mt">Status: Rejected</p>} noStatus='Rejected' message={<p className='text-red-500'>Your study sessions has been rejected!</p>}></SessionsStatusCard>
+            <SessionsStatusCard refetch={refetch} sessions={sessions} sectionTitle='Rejected Sessions' status='rejected' statusTitle={<p className="text-red-500 font-medium mt">Status: Rejected</p>} noStatus='Rejected'></SessionsStatusCard>
         </div>
     );
 };

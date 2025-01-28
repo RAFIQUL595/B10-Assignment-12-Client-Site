@@ -1,9 +1,8 @@
 import React from 'react';
 
-const MaterialsCard = ({ materials, noMaterials, tutorInfo, button, image }) => {
-
+const MaterialsCard = ({ materials, noMaterials, tutorInfo, button, image, SessionId }) => {
     return (
-        <div className='p-6 bg-base-200 rounded-lg shadow-lg'>
+        <div className="p-6 bg-base-200 rounded-lg shadow-lg">
             {materials.length === 0 ? (
                 <p className="text-gray-500">{noMaterials}</p>
             ) : (
@@ -16,6 +15,7 @@ const MaterialsCard = ({ materials, noMaterials, tutorInfo, button, image }) => 
                             {image(material)}
                             <div className="card-body">
                                 <h2 className="card-title">{material.title}</h2>
+                                {SessionId(material)}
                                 {tutorInfo(material)}
                                 {button(material)}
                             </div>

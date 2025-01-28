@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -39,43 +40,43 @@ const AllMaterials = () => {
 
     // Submit material update
     const onSubmit = async (data) => {
-            let imageUrl = selectedMaterial?.image;
-            if (data.image.length > 0) {
-                const formData = new FormData();
-                formData.append('image', data.image[0]);
+        let imageUrl = selectedMaterial?.image;
+        if (data.image.length > 0) {
+            const formData = new FormData();
+            formData.append('image', data.image[0]);
 
-                const res = await axiosPublic.post(image_hosting_api, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
+            const res = await axiosPublic.post(image_hosting_api, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
 
-                if (res.data.success) {
-                    imageUrl = res.data.data.display_url;
-                } else {
-                    toast.error('Image upload failed. Please try again.');
-                    return;
-                }
-            }
-
-            const materialData = {
-                title: data.title,
-                image: imageUrl,
-                googleDrive: data.googleDrive,
-                uploadTime: new Date().toLocaleTimeString(),
-            };
-
-            const materialRes = await axiosSecure.patch(`/updateMaterial/${data.sessionId}`, materialData);
-            if (materialRes.data.modifiedCount) {
-                setSelectedMaterial(null);
-                Swal.fire({
-                    title: 'Material Updated Successfully!',
-                    icon: 'success',
-                });
-                refetch();
+            if (res.data.success) {
+                imageUrl = res.data.data.display_url;
             } else {
-                toast.error('Failed to update material. Please try again.');
+                toast.error('Image upload failed. Please try again.');
+                return;
             }
+        }
+
+        const materialData = {
+            title: data.title,
+            image: imageUrl,
+            googleDrive: data.googleDrive,
+            uploadTime: new Date().toLocaleTimeString(),
+        };
+
+        const materialRes = await axiosSecure.patch(`/updateMaterial/${data.sessionId}`, materialData);
+        if (materialRes.data.modifiedCount) {
+            setSelectedMaterial(null);
+            Swal.fire({
+                title: 'Material Updated Successfully!',
+                icon: 'success',
+            });
+            refetch();
+        } else {
+            toast.error('Failed to update material. Please try again.');
+        }
     };
 
     // Handle material delete
@@ -109,7 +110,7 @@ const AllMaterials = () => {
     };
 
     return (
-        <div>
+        <div className='my-10'>
             <Helmet>
                 <title>View All Materials | Study Platform</title>
             </Helmet>
@@ -126,7 +127,10 @@ const AllMaterials = () => {
                         />
                     </figure>
                 )}
-                tutorInfo={(material) => <p>Google Drive: {material.googleDrive}</p>}
+                SessionId={(material) => <p>SessionId: {material?.sessionId}</p>}
+                tutorInfo={(material) => <p><Link to={material.googleDrive} target="_blank">
+                    <span className='font-bold underline'>Material Link</span>
+                </Link></p>}
                 button={(material) => (
                     <div className="card-actions justify-between">
                         <button

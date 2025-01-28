@@ -114,6 +114,18 @@ const Dashboard = () => {
               View All Study Sessions
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/dashboard/viewAllMaterials"
+              className={({ isActive }) =>
+                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
+                }`
+              }
+            >
+              <SiMaterialformkdocs className="mr-2" />
+              View All Materials
+            </NavLink>
+          </li>
         </>
       )}
       {!isAdmin && !isTutor && (
@@ -158,7 +170,7 @@ const Dashboard = () => {
   );
 
   return (
-    <div className="lg:flex max-w-screen-xl mx-auto my-10">
+    <div className="lg:flex max-w-screen-xl mx-auto">
       {/* Sidebar Navigation */}
       <div className="lg:w-80 flex lg:flex-col justify-between lg:justify-start items-center space-y-5 bg-slate-400 py-10 md:px-10">
         {/* User Profile */}

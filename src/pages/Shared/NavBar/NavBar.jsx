@@ -52,7 +52,7 @@ const Navbar = () => {
     );
 
     return (
-        <div className="navbar bg-base-100 shadow-md px-4">
+        <div className="navbar fixed z-10 max-w-screen-xl bg-opacity-30 bg-base-100 shadow-md px-4 text-blue-500">
             {/* Navbar Start */}
             <div className="navbar-start">
                 {/* Dropdown for Mobile Navigation */}

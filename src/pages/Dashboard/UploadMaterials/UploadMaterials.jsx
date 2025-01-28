@@ -90,6 +90,7 @@ const UploadMaterials = () => {
                         />
                     </figure>
                 )}
+                SessionId={(material) => <p>SessionId: {material?._id}</p>}
                 tutorInfo={(material) => <p>Tutor Name: {material.tutorName}</p>}
                 button={(material) => (
                     <div className="card-actions justify-center">

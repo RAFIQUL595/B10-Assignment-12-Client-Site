@@ -3,6 +3,7 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import Swal from 'sweetalert2';
+import SectionTitle from '../../../components/SectionTitle/SectionTitle';
 
 const ViewAllUsers = () => {
     const axiosSecure = useAxiosSecure();
@@ -56,6 +57,7 @@ const ViewAllUsers = () => {
             <Helmet>
                 <title>View All Users | Study Platform</title>
             </Helmet>
+            <SectionTitle heading='View All Users'></SectionTitle>
             <div className='flex justify-between items-center mb-5'>
                 <h1 className='text-lg font-bold'>
                     All Users: <span className='bg-blue-300 text-white px-2 py-1 rounded-[50%]'>{users.length}</span>
@@ -66,7 +68,7 @@ const ViewAllUsers = () => {
                         placeholder="Search by name or email"
                         className="border px-3 py-1 rounded"
                         onClick={handleSearch}
-                        value={searchQuery}
+                        defaultValue={searchQuery}
                     />
                 </div>
             </div>
@@ -106,10 +108,10 @@ const ViewAllUsers = () => {
                                 <td className="px-4 py-2 border border-gray-200 text-center">
                                     <div className="flex justify-center gap-2">
                                         <select onClick={(e) => setRole(e.target.value)} className="px-3 py-1 text-sm border rounded">
-                                            <option value="">Select Role</option>
-                                            <option value="Admin">Admin</option>
-                                            <option value="Tutor">Tutor</option>
-                                            <option value="Student">Student</option>
+                                            <option defaultValue="">Select Role</option>
+                                            <option defaultValue="Admin">Admin</option>
+                                            <option defaultValue="Tutor">Tutor</option>
+                                            <option defaultValue="Student">Student</option>
                                         </select>
                                         <button
                                             onClick={() => handleRoleUpdate(user._id)}
