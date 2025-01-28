@@ -20,7 +20,7 @@ const SessionDetails = () => {
     const { data: session = {} } = useQuery({
         queryKey: ["session", id],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/viewBookedDetails/${id}`);
+            const res = await axiosSecure.get(`/viewSessionsDetails/${id}`);
             return res.data;
         },
         enabled: !!id,
