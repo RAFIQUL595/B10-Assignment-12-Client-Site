@@ -13,6 +13,7 @@ import ViewAllUsers from "../pages/Dashboard/ViewAllUsers/ViewAllUsers";
 import AdminRoute from "./AdminRoute";
 import AdminViewSession from "../pages/Dashboard/AdminViewSession/AdminViewSession";
 import AdminViewMaterials from "../pages/Dashboard/AdminViewMaterials/AdminViewMaterials";
+import SessionDetails from "../components/SessionDetails/SessionDetails";
 
 const router = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
             {
                 path: "login",
                 element: <Login></Login>
+            },
+            {
+                path: "sessionDetails/:id",
+                element: <SessionDetails></SessionDetails>
             }
         ]
     },

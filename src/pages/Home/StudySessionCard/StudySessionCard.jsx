@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import { Link } from "react-router-dom";
 
 const StudySessionCard = () => {
     const axiosPublic = useAxiosPublic();
@@ -9,7 +10,7 @@ const StudySessionCard = () => {
     const { data: sessions = [] } = useQuery({
         queryKey: ["sessions"],
         queryFn: async () => {
-            const res = await axiosPublic.get("/adminViewSessions");
+            const res = await axiosPublic.get("/viewSessions");
             return res.data;
         }
     });
@@ -58,7 +59,7 @@ const StudySessionCard = () => {
                                     </button>
 
                                     {/* Read More Button */}
-                                    <button className="btn btn-primary">Read More</button>
+                                    <Link to={`/sessionDetails/${session._id}`}><button className="btn btn-primary">Read More</button></Link>
                                 </div>
                             </div>
                         </div>
