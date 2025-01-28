@@ -1,22 +1,26 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { Helmet } from 'react-helmet-async';
 import { useQuery } from '@tanstack/react-query';
 import useAdmin from '../../hooks/useAdmin';
 import useTutor from '../../hooks/useTutor';
+import useAuth from '../../hooks/useAuth';
+import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
 
 const SessionDetails = () => {
     const { id } = useParams();
     const axiosSecure = useAxiosSecure();
     const [isAdmin] = useAdmin();
     const [isTutor] = useTutor();
-
+    const { user } = useAuth();
+    const navigate = useNavigate();
     // Fetch session details
     const { data: session = {} } = useQuery({
         queryKey: ["session", id],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/viewSessionsDetails/${id}`);
+            const res = await axiosSecure.get(`/viewBookedDetails/${id}`);
             return res.data;
         },
         enabled: !!id,
@@ -33,6 +37,7 @@ const SessionDetails = () => {
     const {
         title,
         tutorName,
+        tutorEmail,
         description,
         registrationStartDate,
         registrationEndDate,
@@ -43,10 +48,40 @@ const SessionDetails = () => {
         sessionImage,
     } = session || {};
 
-
     // Determine if registration has ended
     const isRegistrationClosed = registrationEndDate && new Date(registrationEndDate) < new Date();
 
+    const handleBookSession = async () => {
+        const sessionData = {
+            sessionId: id,
+            studentEmail: user?.email,
+            studentName: user?.displayName,
+            tutorEmail,
+            title,
+            tutorName,
+            description,
+            registrationStartDate,
+            registrationEndDate,
+            classStartDate,
+            classEndDate,
+            sessionDuration,
+            registrationFee,
+            sessionImage,
+        };
+
+        const res = await axiosSecure.post('/bookedSession', sessionData);
+
+        if (res.data.insertedId) {
+            Swal.fire({
+                title: "Session Booked Successfully!",
+                icon: "success",
+                draggable: true
+            });
+            navigate('/dashboard/viewBookedSession');
+        } else {
+            toast.error("Booking Failed!");
+        }
+    };
 
     return (
         <div className='py-32 flex items-center justify-center'>
@@ -76,13 +111,12 @@ const SessionDetails = () => {
                     <div className="card-actions justify-end">
                         {
                             (isAdmin || isTutor) ? (
-                                <button
-                                    className="btn btn-disabled"
-                                >
+                                <button className="btn btn-disabled">
                                     Book Now
                                 </button>
                             ) : (
                                 <button
+                                    onClick={handleBookSession}
                                     className={`btn ${isRegistrationClosed ? 'btn-disabled' : 'btn-primary'}`}
                                     disabled={isRegistrationClosed}
                                 >

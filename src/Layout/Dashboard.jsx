@@ -131,14 +131,14 @@ const Dashboard = () => {
       {!isAdmin && !isTutor && (
         <li>
           <NavLink
-            to="/dashboard/viewAllUsers"
+            to="/dashboard/viewBookedSession"
             className={({ isActive }) =>
               `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
               }`
             }
           >
             <FaUsers className="mr-2" />
-            View All Users
+            View booked session
           </NavLink>
         </li>
       )}

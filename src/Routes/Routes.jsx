@@ -14,6 +14,8 @@ import AdminRoute from "./AdminRoute";
 import AdminViewSession from "../pages/Dashboard/AdminViewSession/AdminViewSession";
 import AdminViewMaterials from "../pages/Dashboard/AdminViewMaterials/AdminViewMaterials";
 import SessionDetails from "../components/SessionDetails/SessionDetails";
+import ViewBookedSession from "../pages/Dashboard/ViewBookedSession/ViewBookedSession";
+import ViewDetails from "../components/ViewDetails/ViewDetails";
 
 const router = createBrowserRouter([
     {
@@ -35,6 +37,10 @@ const router = createBrowserRouter([
             {
                 path: "sessionDetails/:id",
                 element: <SessionDetails></SessionDetails>
+            },
+            {
+                path: "viewDetails/:id",
+                element: <ViewDetails></ViewDetails>
             }
         ]
     },
@@ -42,6 +48,10 @@ const router = createBrowserRouter([
         path: "dashboard",
         element: <Dashboard></Dashboard>,
         children: [
+            {
+                path: "viewBookedSession",
+                element: <ViewBookedSession></ViewBookedSession>
+            },
             // Admin Routes
             {
                 path: "viewAllUsers",
