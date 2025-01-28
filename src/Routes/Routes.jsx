@@ -18,6 +18,7 @@ import ViewBookedSession from "../pages/Dashboard/ViewBookedSession/ViewBookedSe
 import ViewDetails from "../components/ViewDetails/ViewDetails";
 import CreateNote from "../pages/Dashboard/CreateNote/CreateNote";
 import ManageNote from "../pages/Dashboard/ManageNote/ManageNote";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
     {
@@ -38,29 +39,29 @@ const router = createBrowserRouter([
             },
             {
                 path: "sessionDetails/:id",
-                element: <SessionDetails></SessionDetails>
+                element: <PrivateRoute><SessionDetails></SessionDetails></PrivateRoute>
             },
-            {
-                path: "viewDetails/:id",
-                element: <ViewDetails></ViewDetails>
-            }
         ]
     },
     {
         path: "dashboard",
-        element: <Dashboard></Dashboard>,
+        element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
         children: [
             {
                 path: "createNote",
-                element: <CreateNote></CreateNote>
+                element: <PrivateRoute><CreateNote></CreateNote></PrivateRoute>
             },
             {
                 path: "viewBookedSession",
-                element: <ViewBookedSession></ViewBookedSession>
+                element: <PrivateRoute><ViewBookedSession></ViewBookedSession></PrivateRoute>
             },
             {
                 path: "viewNote",
-                element: <ManageNote></ManageNote>
+                element: <PrivateRoute><ManageNote></ManageNote></PrivateRoute>
+            },
+            {
+                path: "viewDetails/:id",
+                element: <PrivateRoute><ViewDetails></ViewDetails></PrivateRoute>
             },
             // Admin Routes
             {

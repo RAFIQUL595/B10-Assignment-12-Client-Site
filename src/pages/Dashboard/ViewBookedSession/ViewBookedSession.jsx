@@ -26,7 +26,7 @@ const ViewBookedSession = () => {
                             <img src={session.sessionImage} alt="" />
                             <h3 className="text-lg font-semibold">Title: {session.title}</h3>
                             <div className="card-actions justify-center">
-                                <Link to={`/viewDetails/${session._id}`}><button className="btn btn-primary">View Details</button></Link>
+                                <Link to={`/dashboard/viewDetails/${session._id}`}><button className="btn btn-primary">View Details</button></Link>
                             </div>
                         </div>
                     ))}

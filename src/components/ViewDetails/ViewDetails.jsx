@@ -7,6 +7,7 @@ import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import SectionTitle from '../SectionTitle/SectionTitle';
 
 const ViewDetails = () => {
     const { id } = useParams();
@@ -79,10 +80,11 @@ const ViewDetails = () => {
             <Helmet>
                 <title>View Details | Study Platform</title>
             </Helmet>
+            <SectionTitle heading="View Session Details "></SectionTitle>
 
             {/* Session Details */}
-            <div className="bg-white p-6 shadow-lg rounded-lg text-lg">
-                <img className='w-full rounded-lg' src={sessionImage} alt="" />
+            <div className="bg-white p-6 shadow-lg rounded-lg text-lg border">
+                <img className='w-96 rounded-lg mx-auto mb-4' src={sessionImage} alt="" />
                 <h2 className="text-2xl font-bold">{title}</h2>
                 <div className='flex justify-between'>
                     <p className="mt-2 text-gray-600">Tutor Name: {tutorName}</p>
