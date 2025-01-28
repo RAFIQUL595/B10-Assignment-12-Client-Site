@@ -44,9 +44,7 @@ const AdminViewSession = () => {
     // Submit material update
     const onSubmit = async (data) => {
         let imageUrl = data?.sessionImage;
-        // console.log(data.sessionImage);
-        console.log(imageUrl);
-        
+
         if (data.sessionImage && data.sessionImage.length > 0 && typeof data.sessionImage==='object') {
             const formData = new FormData();
             formData.append('image', data.sessionImage[0]);

@@ -11,6 +11,7 @@ import { CiLogout } from 'react-icons/ci';
 import { SiMaterialformkdocs } from 'react-icons/si';
 import useAdmin from '../hooks/useAdmin';
 import useTutor from '../hooks/useTutor';
+import { MdEditNote } from 'react-icons/md';
 
 const Dashboard = () => {
   const { user, handelLogOut } = useAuth();
@@ -152,6 +153,18 @@ const Dashboard = () => {
             >
               <IoCreateOutline className="mr-2" />
               Create Note
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/dashboard/viewNote"
+              className={({ isActive }) =>
+                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
+                }`
+              }
+            >
+              <MdEditNote className="mr-2" />
+              Manage Notes
             </NavLink>
           </li>
         </>

@@ -81,7 +81,6 @@ const AllMaterials = () => {
 
     // Handle material delete
     const handleDeleteMaterials = async (id) => {
-        // Show confirmation dialog first
         const result = await Swal.fire({
             title: "Are you sure?",
             text: "You won't be deleted this!",
