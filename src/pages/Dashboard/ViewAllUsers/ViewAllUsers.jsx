@@ -10,7 +10,7 @@ const ViewAllUsers = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [role, setRole] = useState("");
 
-    // User fetch
+    // User fetch with search query
     const { data: users = [], refetch } = useQuery({
         queryKey: ['users', searchQuery],
         queryFn: async () => {
@@ -20,6 +20,7 @@ const ViewAllUsers = () => {
             const res = await axiosSecure.get(url);
             return res.data;
         },
+        enabled: true,
     });
 
     // Search Handle
@@ -67,8 +68,8 @@ const ViewAllUsers = () => {
                         type="text"
                         placeholder="Search by name or email"
                         className="border px-3 py-1 rounded"
-                        onClick={handleSearch}
-                        defaultValue={searchQuery}
+                        onChange={handleSearch}
+                        value={searchQuery}
                     />
                 </div>
             </div>
@@ -107,11 +108,11 @@ const ViewAllUsers = () => {
                                 <td className="px-4 py-2 border border-gray-200 text-center">{user.role}</td>
                                 <td className="px-4 py-2 border border-gray-200 text-center">
                                     <div className="flex justify-center gap-2">
-                                        <select onClick={(e) => setRole(e.target.value)} className="px-3 py-1 text-sm border rounded">
-                                            <option defaultValue="">Select Role</option>
-                                            <option defaultValue="Admin">Admin</option>
-                                            <option defaultValue="Tutor">Tutor</option>
-                                            <option defaultValue="Student">Student</option>
+                                        <select onChange={(e) => setRole(e.target.value)} className="px-3 py-1 text-sm border rounded">
+                                            <option value="">Select Role</option>
+                                            <option value="Admin">Admin</option>
+                                            <option value="Tutor">Tutor</option>
+                                            <option value="Student">Student</option>
                                         </select>
                                         <button
                                             onClick={() => handleRoleUpdate(user._id)}
