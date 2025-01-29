@@ -167,6 +167,18 @@ const Dashboard = () => {
               Manage Notes
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/dashboard/studyMaterials"
+              className={({ isActive }) =>
+                `flex items-center p-3 rounded-lg ${isActive ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'
+                }`
+              }
+            >
+              <SiMaterialformkdocs className="mr-2" />
+              Study Materials
+            </NavLink>
+          </li>
         </>
       )}
 

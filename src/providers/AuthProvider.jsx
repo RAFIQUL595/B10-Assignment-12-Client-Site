@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
 import React, { createContext, useEffect, useState } from 'react';
 import auth from './../firebase/firebase.config';
 import toast from 'react-hot-toast';
@@ -10,6 +10,8 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const axiosPublic = useAxiosPublic();
+    const googleProvider = new GoogleAuthProvider();
+    const gitHubProvider = new GithubAuthProvider();
 
 
     // SignUp With Email and Password
@@ -29,6 +31,18 @@ const AuthProvider = ({ children }) => {
         setLoading(true);
         toast.success("Log Out Successfully");
         return signOut(auth);
+    };
+
+    // Google Login
+    const handelGoogle = () => {
+        setLoading(true);
+        return signInWithPopup(auth, googleProvider);
+    };
+
+    // GitHub Login
+    const handleGitHub = () => {
+        setLoading(true);
+        return signInWithPopup(auth, gitHubProvider);
     };
 
     // Update user profile
@@ -78,7 +92,9 @@ const AuthProvider = ({ children }) => {
         handelSignUp,
         handelLogin,
         updateUser,
-        handelLogOut
+        handelLogOut,
+        handelGoogle,
+        handleGitHub
     }
 
     return (

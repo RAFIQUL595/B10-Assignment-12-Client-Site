@@ -19,11 +19,14 @@ import ViewDetails from "../components/ViewDetails/ViewDetails";
 import CreateNote from "../pages/Dashboard/CreateNote/CreateNote";
 import ManageNote from "../pages/Dashboard/ManageNote/ManageNote";
 import PrivateRoute from "./PrivateRoute";
+import StudyMaterials from "../pages/Dashboard/StudyMaterials/StudyMaterials";
+import ErrorPage from "../pages/SignUp/ErrorPage/ErrorPage";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <Main></Main>,
+        errorElement: <ErrorPage></ErrorPage>,
         children: [
             {
                 path: "/",
@@ -47,6 +50,7 @@ const router = createBrowserRouter([
         path: "dashboard",
         element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
         children: [
+            // Student Routes
             {
                 path: "createNote",
                 element: <PrivateRoute><CreateNote></CreateNote></PrivateRoute>
@@ -62,6 +66,10 @@ const router = createBrowserRouter([
             {
                 path: "viewDetails/:id",
                 element: <PrivateRoute><ViewDetails></ViewDetails></PrivateRoute>
+            },
+            {
+                path: "studyMaterials",
+                element: <PrivateRoute><StudyMaterials></StudyMaterials></PrivateRoute>
             },
             // Admin Routes
             {
