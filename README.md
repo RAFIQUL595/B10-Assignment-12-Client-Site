@@ -1,8 +1,28 @@
-# React + Vite
+**Website Name**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Study Platform
 
-Currently, two official plugins are available:
+**Admin username**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+admin@gmail.com
+
+**Password**
+
+111111
+
+**live site URL**
+
+https://study-platform-29539.web.app
+
+**10 feature website.**
+
+<li>Review & Rating System</li>
+<li>Study Session Scheduling</li>
+<li>Role-Based Access Control</li>
+<li>Study Session Management</li>
+<li>Study Session Material Upload</li>
+<li>Search and Filter Functionality</li>
+<li>Data Fetching with TanStack Query</li>
+<li>User Role Customization</li>
+<li>JWT Authentication</li>
+<li>Pagination</li>
