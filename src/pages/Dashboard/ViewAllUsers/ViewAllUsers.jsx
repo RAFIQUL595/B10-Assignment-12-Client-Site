@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
@@ -9,6 +9,8 @@ const ViewAllUsers = () => {
     const axiosSecure = useAxiosSecure();
     const [searchQuery, setSearchQuery] = useState("");
     const [role, setRole] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(4);
 
     // User fetch with search query
     const { data: users = [], refetch } = useQuery({
@@ -22,6 +24,18 @@ const ViewAllUsers = () => {
         },
         enabled: true,
     });
+
+    // Pagination calculations
+    const totalUsers = users.length;
+    const totalPages = Math.ceil(totalUsers / postsPerPage);
+    const currentUsers = users.slice((currentPage - 1) * postsPerPage, currentPage * postsPerPage);
+
+    // Ensure valid current page when total users change
+    useEffect(() => {
+        if (currentPage > totalPages) {
+            setCurrentPage(Math.max(totalPages, 1));
+        }
+    }, [totalUsers, totalPages, currentPage]);
 
     // Search Handle
     const handleSearch = (event) => {
@@ -87,7 +101,7 @@ const ViewAllUsers = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((user, index) => (
+                        {currentUsers.map((user, index) => (
                             <tr
                                 key={user._id}
                                 className={`${index % 2 === 0 ? "bg-white" : "bg-gray-50"
@@ -127,6 +141,29 @@ const ViewAllUsers = () => {
                     </tbody>
                 </table>
             </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+                <div className="flex justify-center mt-6 space-x-2">
+                    <button
+                        className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md transition disabled:opacity-50"
+                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                        disabled={currentPage === 1}
+                    >
+                        Previous
+                    </button>
+                    <span className="px-4 py-2 bg-gray-200 rounded-md font-medium">
+                        Page {currentPage} of {totalPages}
+                    </span>
+                    <button
+                        className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md transition disabled:opacity-50"
+                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                        disabled={currentPage === totalPages}
+                    >
+                        Next
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

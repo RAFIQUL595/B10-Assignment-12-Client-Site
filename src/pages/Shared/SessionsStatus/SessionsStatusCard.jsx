@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
-const SessionsStatusCard = ({ refetch, sessions, sectionTitle, status, statusTitle, noStatus, message, actions }) => {
+const SessionsStatusCard = ({ refetch, sessions, sectionTitle, status, statusTitle, noSession, message, actions }) => {
     const axiosSecure = useAxiosSecure();
 
     // New approval request
@@ -11,24 +11,22 @@ const SessionsStatusCard = ({ refetch, sessions, sectionTitle, status, statusTit
         const rejected = {
             feedback: '',
             rejectionReason: ''
+        };
+        const res = await axiosSecure.patch(`/sessions/${_id}`, rejected);
+        if (res.data.matchedCount > 0) {
+            refetch();
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: `Resend Approval successfully!`,
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
-        const res = await axiosSecure.patch(`/sessions/${_id}`, rejected)
-            .then(res => {
-                if (res.data.matchedCount > 0) {
-                    refetch();
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: `Resend Approval successfully!`,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                }
-                else (error => {
-                    toast.error('Request failed. No changes were made.')
-                })
-            })
-    }
+        else {
+            toast.error('Resend Approval Request Sent.!')
+        }
+    };
 
     return (
         <div className="mb-20">
@@ -85,18 +83,16 @@ const SessionsStatusCard = ({ refetch, sessions, sectionTitle, status, statusTit
                                 {message}
 
                                 {/* Reject Reason and Feedback */}
-                                {
-                                    status === 'rejected' && (
-                                        <div className="font-bold">
-                                            <div className='text-gray-500'>
-                                                Rejection Reason: {session.rejectionReason}
-                                            </div>
-                                            <div className='text-orange-400'>
-                                                Feedback: {session.feedback}
-                                            </div>
+                                {status === 'rejected' && (
+                                    <div className="font-bold">
+                                        <div className='text-gray-500'>
+                                            Rejection Reason: {session.rejectionReason}
                                         </div>
-                                    )
-                                }
+                                        <div className='text-orange-400'>
+                                            Feedback: {session.feedback}
+                                        </div>
+                                    </div>
+                                )}
 
                                 {/* Approved and Reject Button */}
                                 <div>{actions && actions(session)}</div>
@@ -114,7 +110,7 @@ const SessionsStatusCard = ({ refetch, sessions, sectionTitle, status, statusTit
                         ))
                 ) : (
                     <div className="text-center text-gray-500 col-span-full">
-                        <p className="text-lg font-semibold">No {noStatus} Sessions Available</p>
+                        <p className="text-lg font-semibold">No {noSession} Sessions Available</p>
                     </div>
                 )}
             </div>
