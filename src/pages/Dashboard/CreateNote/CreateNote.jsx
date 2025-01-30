@@ -5,6 +5,7 @@ import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet-async";
 
 const CreateNote = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -31,6 +32,9 @@ const CreateNote = () => {
 
     return (
         <div className="max-w-md mx-auto p-4 bg-white shadow-md rounded-lg my-20 border">
+            <Helmet>
+                <title>Create Note | Study Platform</title>
+            </Helmet>
             <SectionTitle heading="Create Note" />
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 {/* Email Field */}

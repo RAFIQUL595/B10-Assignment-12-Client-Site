@@ -19,7 +19,7 @@ const AllMaterials = () => {
     const axiosSecure = useAxiosSecure();
     const axiosPublic = useAxiosPublic();
     const [selectedMaterial, setSelectedMaterial] = useState(null);
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, reset } = useForm();
 
     // Get all materials data
     const { data: materials = [], refetch } = useQuery({
@@ -31,6 +31,7 @@ const AllMaterials = () => {
     });
 
     const handleOpenModal = (material) => {
+        reset(material)
         setSelectedMaterial(material);
     };
 

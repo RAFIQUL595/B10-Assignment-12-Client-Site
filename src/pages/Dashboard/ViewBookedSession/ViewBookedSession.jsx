@@ -4,6 +4,7 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
+import { Helmet } from 'react-helmet-async';
 
 const ViewBookedSession = () => {
     const axiosSecure = useAxiosSecure();
@@ -20,6 +21,9 @@ const ViewBookedSession = () => {
 
     return (
         <div className="p-5 my-10">
+            <Helmet>
+                <title>View Booked Session | Study Platform</title>
+            </Helmet>
             <SectionTitle heading="My Booked Sessions" />
             {sessions.length > 0 ? (
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

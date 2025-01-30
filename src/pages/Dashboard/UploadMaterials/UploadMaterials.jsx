@@ -27,6 +27,9 @@ const UploadMaterials = () => {
         },
     });
 
+    // filter Materials
+    const filterMaterials = materials.filter(material => material.status === "approved");
+
     const handleOpenModal = (material) => {
         setSelectedMaterial(material);
     };
@@ -78,7 +81,7 @@ const UploadMaterials = () => {
             </Helmet>
             <SectionTitle heading="Upload Study Materials" />
             <MaterialsCard
-                materials={materials}
+                materials={filterMaterials}
                 noMaterials="No materials uploaded yet."
                 image={(material) => (
                     <figure>

@@ -7,6 +7,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import { Helmet } from "react-helmet-async";
 
 const ManageNote = () => {
     const { user } = useAuth();
@@ -92,6 +93,9 @@ const ManageNote = () => {
 
     return (
         <div className="my-10">
+            <Helmet>
+                <title>Manage Personal Notes | Study Platform</title>
+            </Helmet>
             <SectionTitle heading="Manage Personal Notes"></SectionTitle>
             {notes.length === 0 ? (
                 <p className="text-lg font-bold">No notes available</p>

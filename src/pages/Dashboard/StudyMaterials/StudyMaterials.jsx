@@ -3,6 +3,7 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import SectionTitle from '../../../components/SectionTitle/SectionTitle';
 import useAuth from '../../../hooks/useAuth';
+import { Helmet } from 'react-helmet-async';
 
 const StudyMaterials = () => {
     const [filteredMaterials, setFilteredMaterials] = useState([]);
@@ -55,6 +56,9 @@ const StudyMaterials = () => {
         <div className="p-4 my-10">
             {/* Display all booked sessions */}
             <div className="mb-4">
+                <Helmet>
+                    <title>View All Study Materials | Study Platform</title>
+                </Helmet>
                 <SectionTitle heading="Booked Session Materials" />
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                     {bookedSessions.length > 0 ? (
