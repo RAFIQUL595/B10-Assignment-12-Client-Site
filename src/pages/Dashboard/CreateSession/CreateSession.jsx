@@ -1,12 +1,12 @@
 import React from 'react';
 import useAuth from '../../../hooks/useAuth';
 import { useForm } from "react-hook-form";
-import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import SectionTitle from '../../../components/SectionTitle/SectionTitle';
 import { Helmet } from 'react-helmet-async';
+import axios from 'axios';
 
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
@@ -15,7 +15,6 @@ const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 const CreateSession = () => {
   const { user } = useAuth();
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
-  const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
 
   const onSubmit = async (data) => {
@@ -23,7 +22,7 @@ const CreateSession = () => {
     const formData = new FormData();
     formData.append('image', data.sessionImage[0]);
 
-    const res = await axiosPublic.post(image_hosting_api, formData, {
+    const res = await axios.post(image_hosting_api, formData, {
       headers: {
         'content-type': 'multipart/form-data',
       },

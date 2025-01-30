@@ -5,7 +5,6 @@ import useAuth from "./useAuth";
 
 const axiosSecure = axios.create({
     baseURL: 'https://study-platform-server-beta.vercel.app',
-    // baseURL: 'http://localhost:9000',
     withCredentials: true,
 })
 
@@ -22,7 +21,6 @@ const useAxiosSecure = () => {
         // Do something with request error
         return Promise.reject(error);
     });
-
 
     // intercepts 401 and 403 status
     axiosSecure.interceptors.response.use(function (response) {

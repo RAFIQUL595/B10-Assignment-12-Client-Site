@@ -8,7 +8,7 @@ import useAuth from './../../hooks/useAuth';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
-import SocialLogin from '../Shared/SocialLogin/SocialLogin';
+import SocialLogin from '../../components/SocialLogin/SocialLogin';
 
 const Login = () => {
     const [isEyeOpen, setIsEyeOpen] = useState(false);
@@ -98,6 +98,8 @@ const Login = () => {
                     <div className="form-control mt-6">
                         <button type='submit' className="btn btn-primary text-lg">Login</button>
                     </div>
+
+                    {/* social Login Button */}
                     <SocialLogin></SocialLogin>
                     {/* Sign Up Link */}
                     <div className="mt-5 text-center">
