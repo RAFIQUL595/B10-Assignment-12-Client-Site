@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
+import SectionTitle from '../../../components/SectionTitle/SectionTitle';
+import useAuth from '../../../hooks/useAuth';
 
 const StudyMaterials = () => {
-    const [selectedSessionId, setSelectedSessionId] = useState(null);
     const [filteredMaterials, setFilteredMaterials] = useState([]);
     const axiosSecure = useAxiosSecure();
+    const { user } = useAuth();
 
     // Get all booked sessions data
     const { data: bookedSessions = [] } = useQuery({
         queryKey: ['bookedSessions'],
         queryFn: async () => {
-            const res = await axiosSecure.get('/viewBookedSessions');
+            const res = await axiosSecure.get(`/viewBookedSessions/${user.email}`);
             return res.data;
         }
     });
@@ -26,12 +28,19 @@ const StudyMaterials = () => {
     });
 
     // Handle session click to filter materials by session ID
-    const handleSessionClick = (sessionId) => {
-        setSelectedSessionId(sessionId);
+    const handleOpenModal = (sessionId) => {
         const sessionMaterials = materials.filter(
             (material) => material.sessionId === sessionId
         );
         setFilteredMaterials(sessionMaterials);
+
+        // Open the modal
+        document.getElementById('materialModal').showModal();
+    };
+
+    const handleCloseModal = () => {
+        // Close the modal
+        document.getElementById('materialModal').close();
     };
 
     // Handle downloading of images
@@ -43,20 +52,34 @@ const StudyMaterials = () => {
     };
 
     return (
-        <div className="p-4">
+        <div className="p-4 my-10">
             {/* Display all booked sessions */}
             <div className="mb-4">
-                <h2 className="text-2xl font-semibold">Booked Sessions</h2>
-                <div className="space-y-2 mt-2">
+                <SectionTitle heading="Booked Session Materials" />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                     {bookedSessions.length > 0 ? (
                         bookedSessions.map((session) => (
-                            <button
-                                key={session._id}
-                                className="btn btn-primary w-full"
-                                onClick={() => handleSessionClick(session._id)}
-                            >
-                                View Materials
-                            </button>
+                            <div key={session._id} className="card bg-base-100 shadow-xl">
+                                <figure>
+                                    <img
+                                        src={session.sessionImage}
+                                        alt={session.title}
+                                        className="w-full h-48 object-cover"
+                                    />
+                                </figure>
+                                <div className="card-body">
+                                    <h2 className="card-title">{session.title}</h2>
+                                    <p>{session.description}</p>
+                                    <div className="card-actions justify-center">
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() => handleOpenModal(session.sessionId)}
+                                        >
+                                            View Materials
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         ))
                     ) : (
                         <p>No booked sessions found.</p>
@@ -64,10 +87,10 @@ const StudyMaterials = () => {
                 </div>
             </div>
 
-            {/* Display materials for selected session */}
-            {selectedSessionId && (
-                <div className="mt-6">
-                    <h3 className="text-xl font-semibold">Materials for this Session</h3>
+            {/* Modal */}
+            <dialog id="materialModal" className="modal">
+                <div className="modal-box">
+                    <SectionTitle heading='Materials for Session'></SectionTitle>
                     <div className="space-y-4 mt-2">
                         {filteredMaterials.length > 0 ? (
                             filteredMaterials.map((material) => (
@@ -92,10 +115,10 @@ const StudyMaterials = () => {
                                     )}
 
                                     {/* Google Drive link */}
-                                    {material.link && (
+                                    {material.googleDrive && (
                                         <div className="mt-2">
                                             <a
-                                                href={material.link}
+                                                href={material.googleDrive}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="btn btn-link"
@@ -110,8 +133,11 @@ const StudyMaterials = () => {
                             <p>No materials available for this session.</p>
                         )}
                     </div>
+                    <div className="modal-action">
+                        <button className="btn" onClick={handleCloseModal}>Close</button>
+                    </div>
                 </div>
-            )}
+            </dialog>
         </div>
     );
 };

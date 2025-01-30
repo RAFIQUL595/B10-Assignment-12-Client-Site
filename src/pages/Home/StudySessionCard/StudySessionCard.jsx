@@ -38,7 +38,7 @@ const StudySessionCard = () => {
                         const isStarted = currentDate > registrationStartDate;
 
                         return (
-                            <div key={session._id} className="card bg-base-100 shadow-xl w-96">
+                            <div key={session._id} className="card bg-base-100 shadow-xl px-5">
                                 <figure>
                                     <img
                                         src={session.sessionImage}

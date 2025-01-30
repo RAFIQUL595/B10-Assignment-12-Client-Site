@@ -56,6 +56,7 @@ const ManageNote = () => {
 
     // Handle update - open modal
     const handleOpenModal = (note) => {
+        reset(note);
         setSelectedNote(note);
         setIsModalOpen(true);
     };
@@ -128,7 +129,7 @@ const ManageNote = () => {
                     <div className="modal-box">
                         <SectionTitle heading="Update Note"></SectionTitle>
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            
+
                             {/* Title */}
                             <div className="mb-4">
                                 <label className="block text-lg">Title</label>

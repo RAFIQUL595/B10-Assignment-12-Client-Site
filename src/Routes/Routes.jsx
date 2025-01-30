@@ -20,7 +20,7 @@ import CreateNote from "../pages/Dashboard/CreateNote/CreateNote";
 import ManageNote from "../pages/Dashboard/ManageNote/ManageNote";
 import PrivateRoute from "./PrivateRoute";
 import StudyMaterials from "../pages/Dashboard/StudyMaterials/StudyMaterials";
-import ErrorPage from "../pages/SignUp/ErrorPage/ErrorPage";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
 const router = createBrowserRouter([
     {

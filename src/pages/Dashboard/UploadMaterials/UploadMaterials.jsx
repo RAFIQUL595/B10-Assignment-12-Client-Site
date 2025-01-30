@@ -6,9 +6,9 @@ import useAuth from '../../../hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
-import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import MaterialsCard from '../../../components/MaterialsCard/MaterialsCard';
 import UploadModal from '../../../components/UploadModal/UploadModal';
+import axios from 'axios';
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -16,7 +16,6 @@ const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 const UploadMaterials = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
-    const axiosPublic = useAxiosPublic();
     const [selectedMaterial, setSelectedMaterial] = useState(null);
 
     // Fetch study materials
@@ -38,7 +37,7 @@ const UploadMaterials = () => {
 
     const onSubmit = async (data) => {
         const imageFile = { image: data.image[0] };
-        const res = await axiosPublic.post(image_hosting_api, imageFile, {
+        const res = await axios.post(image_hosting_api, imageFile, {
             headers: {
                 'content-type': 'multipart/form-data',
             },

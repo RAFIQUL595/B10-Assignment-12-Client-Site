@@ -4,16 +4,15 @@ import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import SectionTitle from '../../../components/SectionTitle/SectionTitle';
 import Swal from 'sweetalert2';
-import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const AdminViewSession = () => {
     const axiosSecure = useAxiosSecure();
-    const axiosPublic = useAxiosPublic();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedSession, setSelectedSession] = useState(null);
     const [paymentStatus, setPaymentStatus] = useState('free');
@@ -48,7 +47,7 @@ const AdminViewSession = () => {
         if (data.sessionImage && data.sessionImage.length > 0 && typeof data.sessionImage==='object') {
             const formData = new FormData();
             formData.append('image', data.sessionImage[0]);
-            const res = await axiosPublic.post(image_hosting_api, formData, {
+            const res = await axios.post(image_hosting_api, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

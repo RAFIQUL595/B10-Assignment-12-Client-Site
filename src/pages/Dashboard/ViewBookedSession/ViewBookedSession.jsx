@@ -3,21 +3,23 @@ import SectionTitle from '../../../components/SectionTitle/SectionTitle';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
+import useAuth from '../../../hooks/useAuth';
 
 const ViewBookedSession = () => {
     const axiosSecure = useAxiosSecure();
+    const { user } = useAuth();
 
     // Fetch all booked sessions with loading and error handling
     const { data: sessions = [], refetch } = useQuery({
         queryKey: ['sessions'],
         queryFn: async () => {
-            const res = await axiosSecure.get('/viewBookedSessions');
+            const res = await axiosSecure.get(`/viewBookedSessions/${user.email}`);
             return res.data;
         },
     });
 
     return (
-        <div className="p-5">
+        <div className="p-5 my-10">
             <SectionTitle heading="My Booked Sessions" />
             {sessions.length > 0 ? (
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
