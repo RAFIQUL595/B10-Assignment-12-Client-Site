@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import useAuth from "../../hooks/useAuth";
+import Swal from 'sweetalert2';
 
 const SocialLogin = () => {
     const { handelGoogle, handleGitHub } = useAuth();
@@ -18,6 +19,11 @@ const SocialLogin = () => {
                 }
                 axiosPublic.post('/users', userInfo)
                     .then(res => {
+                        Swal.fire({
+                            title: "Login Successful!",
+                            icon: "success",
+                            draggable: true
+                        });
                         navigate('/');
                     })
             })
@@ -33,6 +39,11 @@ const SocialLogin = () => {
                 }
                 axiosPublic.post('/users', userInfo)
                     .then(res => {
+                        Swal.fire({
+                            title: "Login Successful!",
+                            icon: "success",
+                            draggable: true
+                        });
                         navigate('/');
                     })
             })
